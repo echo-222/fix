@@ -1,0 +1,16 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归南京洪湖消防器材制造有限公司所有，只在本地用作生成输入，不进 git、不放 public/。",
+  "fetched": "2026-11-02",
+  "products": {
+    "extinguisher": {
+      "product": "洪湖 MF/ABCE4 手提式干粉灭火器（4 kg ABC 干粉，GB 4351-2023；旧型号命名 MFZ/ABC4）",
+      "page": "http://www.njhonghu.com/product/36.html",
+      "files": {
+        "cand/honghu-abce4.jpg": "https://cdn.fuwucms.com/a/369156300195/files/20251203125242576.jpg"
+      },
+      "derived": {
+        "ext-front.png": "honghu-abce4.jpg（2581×3873 白底正面图）：瓶身左侧的喷射软管、喷嘴、腰带卡扣涂白；器头上方压把、黄色保险销、铆钉以上部分涂白（保留下方提把、阀门、压力表、软管接头一小截）；补成 3873 正方形白底后缩到 2048"
+      }
+    }
+  }
+}

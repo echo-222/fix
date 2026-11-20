@@ -1,0 +1,18 @@
+{
+  "note": "用南京洪湖消防官网 MF/ABCE4（4 kg ABC 干粉）产品图单图生成（来源见 refs/sources.json；图片不进 git）。参考图用 PIL 涂白了喷射软管、喷嘴、腰带左侧卡扣、上方压把和黄色保险销——这些在场景里用几何体 / cable 单独做（压把要按下、保险销要拔出），模型只保留瓶身、器头阀门、下方提把、压力表、颈圈和腰带。补成正方形后缩到 2048 px。生成后本地 optimize。",
+  "jobs": [
+    {
+      "name": "extinguisher",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/fire-extinguisher-abc4/refs/ext-front.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "extinguisher": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "503061c7-1ec5-4e9a-b20f-16fa2cd949fd",
+        "credits": 40,
+        "seconds": 142,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_e962459e-3210-4654-b99a-f111f36c43d2"
+        },
+        "file": "models/fire-extinguisher-abc4/raw/extinguisher-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 25,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/fire-extinguisher-abc4/raw/extinguisher-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:18.603Z",
+    "file": "public/models/fire-extinguisher-abc4/extinguisher.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:16.836Z"
+  }
+}

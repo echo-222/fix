@@ -1,0 +1,40 @@
+{
+  "note": "Dyson V12 Detect Slim（国行蓝色 Fluffy）真实外观参考图。只取戴森官方站 / 官方图片 CDN / 官方苏宁旗舰店。派生图只做 PIL 裁剪、透明底铺白、补成正方形、缩放到 1024。",
+  "fetched": "2026-11-02",
+  "products": {
+    "body": {
+      "product": "Dyson V12 Detect Slim 主机身与气旋（蓝色）Main body & cyclone (Blue) 971640-01",
+      "page": "https://www.dyson.com.sg/v12-detect-slim-main-body-cyclone-blue",
+      "files": {
+        "sg/971640-01.png": "https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/971640-01.png?wid=1600&fmt=png-alpha"
+      },
+      "derived": { "body-side.png": "971640-01 按 alpha 包围盒裁出，铺白底，四周留 8% 补成正方形，缩放 1024²" }
+    },
+    "head": {
+      "product": "Fluffy Optic 光学纤巧软绒吸头 972522-01（V12 Detect Slim）",
+      "page": "https://www.dyson.com.sg/fluffy-optic-cleaner-head-972522-02",
+      "files": {
+        "sg/972522-01.png": "https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/972522-01.png?wid=1600&fmt=png-alpha"
+      },
+      "derived": { "head-front.png": "972522-01 按 alpha 包围盒裁出，铺白底，留 8% 补成正方形，缩放 1024²" }
+    },
+    "wand": {
+      "product": "V12 Detect Slim 吸尘杆（镍色）971518-12",
+      "page": "https://www.dyson.com/spare-parts/vacuum-cleaners/cordless/v12-detect-slim",
+      "files": {
+        "sg/971518-12.png": "https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/971518-12.png?wid=1600&fmt=png-alpha"
+      },
+      "derived": { "wand.png": "971518-12 按 alpha 包围盒裁出，铺白底，留 4% 补成正方形，缩放 1024²" }
+    },
+    "other": {
+      "product": "整机 / 商城图（只用于比对外观与颜色，未用于生成）",
+      "page": "https://www.dyson.cn/492586-01-dyson-v12-detect-slim-fluffy-blue.html",
+      "files": {
+        "cand/w01_1.png": "https://www-img.dyson.cn/catalog/product/v/1/v12-w01_1.png",
+        "sg/p-492586-01.png": "https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/492586-01.png?wid=1600&fmt=png-alpha",
+        "sg/971666-01.png": "https://dyson-h.assetsadobe2.com/is/image/content/dam/dyson/images/products/primary/971666-01.png?wid=1600&fmt=png-alpha",
+        "suning/*": "https://product.suning.com/0000000000/12439264115.html（逐张地址见 suning/list.txt）"
+      }
+    }
+  }
+}

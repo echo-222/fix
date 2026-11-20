@@ -1,0 +1,34 @@
+{
+  "note": "Nespresso Essenza Mini C30（白色）参考图。nespresso.com / nespresso.cn 在本机 SSL 握手失败，产品照片取自苏宁自营 Nespresso 商品页（uimgproxy 原图），线稿取自 Nespresso 中国官方机器指南站。图片只放本目录（gitignore），不进 public/。",
+  "fetched": "2026-11-02",
+  "products": {
+    "guidance": {
+      "product": "Nespresso 中国官方机器指南 Essenza Mini C30",
+      "page": "https://machineguidance.nespressochina.com/s/original-series/essenza-mini/essenza-mini-c30/p",
+      "files": {
+        "c30-1200.png": "https://machineguidance.nespressochina.com/media/pages/original-series/essenza-mini/1e8a8b1b72-1779237480/c30-1200x1200.png",
+        "c30-900x720.png": "https://machineguidance.nespressochina.com/media/pages/original-series/essenza-mini/1e8a8b1b72-1779237480/c30-900x720.png"
+      }
+    },
+    "c30-white": {
+      "product": "Nespresso Essenza Mini C30 白色（苏宁自营）",
+      "page": "https://product.suning.com/0000000000/10743139629.html",
+      "files": {
+        "suning/10743139629-8NlS7vWhTCkiLYroXgpYow.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/8NlS7vWhTCkiLYroXgpYow.jpg",
+        "suning/10743139629-SypPm_3EVUlkH6yI6pGDBw.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/SypPm_3EVUlkH6yI6pGDBw.jpg",
+        "suning/10743139629-bPkn2qnZC5D-sataE1LcqA.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/bPkn2qnZC5D-sataE1LcqA.jpg",
+        "suning/10743139629-aC9_x9chFBGigJ10IdVdfg.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/aC9_x9chFBGigJ10IdVdfg.jpg",
+        "suning/10743139629-CTbWHcairEUpBVRhRQn-aQ.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/CTbWHcairEUpBVRhRQn-aQ.jpg",
+        "suning/10743139629-enD26PCF0IEQW0elk_vC9Q.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/enD26PCF0IEQW0elk_vC9Q.jpg",
+        "suning/10743139629-19aMyQcIlkKTOVrAlN-8ww.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/19aMyQcIlkKTOVrAlN-8ww.jpg"
+      },
+      "derived": {
+        "body-3q.png": "包装说明图（8NlS7…）里的 ① 主机（不含水箱 / 滴水盘 / 胶囊盒）：裁 (80,200)-(296,512)，编号圆标 ❶ 在顶面后棱线以上涂白、以下按棱线方向平移取色补齐，补成白底正方形后 LANCZOS 放大到 1024 并轻度锐化",
+        "body-clean.jpg": "body-3q.png 转 JPEG 后用 scripts/ref-cover.mjs 按机身颜色抹平顶上两个咖啡键 404,209,466,246 466,184,523,220（按键在说明书里是几何体）",
+        "tank.png": "同图 ② 水箱：裁 (350,236)-(462,444)，圆标 ❷ 压住右侧口沿，用左半边沿轴线（x=405.5）镜像覆盖右半边，补方放大",
+        "bin.png": "同图 ③ 胶囊盒：圆标 ❸ 在两个导板之间的空白处，涂白；裁 (495,326)-(592,503)，补方放大",
+        "tray.png": "同图 ④ 滴水盘：裁 (645,377)-(735,468)（圆标 ❹ 在其上方，裁掉），补方放大"
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "note": "米家电动滑板车3 青春版整车：官方 3/4 产品图（mi.com 海外站 3 Lite 主图，见 refs/sources.json）图生模型。说明书里竖管要折叠、车把要单独装，规格里同一个 GLB 按高度裁成车身 / 折叠关节 / 竖管 / 车把四段挂在四个零件上。",
+  "jobs": [
+    {
+      "name": "scooter",
+      "steps": [
+        { "type": "image-to-model", "image": "models/xiaomi-scooter-3-lite/refs/scooter-34.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

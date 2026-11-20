@@ -3,3 +3,15 @@ dist
 .env.local
 .env.*.local
 .DS_Store
+shots/
+# 未获授权的官方说明书原文（PDF / 逐页图），只做内部建模
+manuals-src/
+# Tripo 中间结果（最终模型在 public/models/）
+models/*/raw/
+# 联网抓的产品参考图（版权归品牌方），只留来源清单
+models/*/refs/*
+!models/*/refs/sources.json
+# 网页上导入生成的说明书（含上传的原页图），属于本机用户的库；要发布某一份时把它改成 library/ 里的 .ts
+public/imported/
+# 社区数据（笔记、评论、点赞、用户上传的图片），是运行时数据
+data/

@@ -1,0 +1,207 @@
+{
+  "desk": {
+    "top": 0.101,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "roborock-p10": {
+    "top": 0.05,
+    "left": 0.16,
+    "right": 0.84
+  },
+  "dyson-v12": {
+    "top": 0.05,
+    "left": 0.399,
+    "right": 0.601
+  },
+  "nespresso-essenza-mini": {
+    "top": 0.05,
+    "left": 0.101,
+    "right": 0.899
+  },
+  "xiaomi-scooter-3-lite": {
+    "top": 0.05,
+    "left": 0.225,
+    "right": 0.775
+  },
+  "shelf": {
+    "top": 0.05,
+    "left": 0.317,
+    "right": 0.683
+  },
+  "table": {
+    "top": 0.05,
+    "left": 0.129,
+    "right": 0.871
+  },
+  "rack": {
+    "top": 0.05,
+    "left": 0.262,
+    "right": 0.738
+  },
+  "mouse-bt54": {
+    "top": 0.392,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "nintendo-switch-oled": {
+    "top": 0.069,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "xiaomi-camera-c400": {
+    "top": 0.22,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "ecovacs-t90s-pro": {
+    "top": 0.277,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "roborock-p20-pro": {
+    "top": 0.056,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "xiaomi-water-purifier": {
+    "top": 0.05,
+    "left": 0.327,
+    "right": 0.673
+  },
+  "midea-ac-ks1": {
+    "top": 0.247,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "zhimi-toilet-seat-s": {
+    "top": 0.05,
+    "left": 0.163,
+    "right": 0.837
+  },
+  "tplink-xdr6088": {
+    "top": 0.311,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "xiaomi-router-ax3000t": {
+    "top": 0.234,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "xiaomi-lock-mjznms02lm": {
+    "top": 0.05,
+    "left": 0.293,
+    "right": 0.707
+  },
+  "epson-l3258": {
+    "top": 0.05,
+    "left": 0.134,
+    "right": 0.866
+  },
+  "pc-build-b650m": {
+    "top": 0.268,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "ikea-jonaxel": {
+    "top": 0.05,
+    "left": 0.271,
+    "right": 0.729
+  },
+  "ikea-kallax": {
+    "top": 0.05,
+    "left": 0.309,
+    "right": 0.691
+  },
+  "ikea-malm": {
+    "top": 0.05,
+    "left": 0.106,
+    "right": 0.894
+  },
+  "goodbaby-pockit": {
+    "top": 0.05,
+    "left": 0.252,
+    "right": 0.748
+  },
+  "fire-extinguisher-abc4": {
+    "top": 0.05,
+    "left": 0.339,
+    "right": 0.661
+  },
+  "origami-dart": {
+    "top": 0.373,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "mech-gear-train": {
+    "top": 0.444,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "origami-cup": {
+    "top": 0.074,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "origami-dog": {
+    "top": 0.073,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "origami-heart": {
+    "top": 0.05,
+    "left": 0.155,
+    "right": 0.845
+  },
+  "popup-parallel": {
+    "top": 0.125,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "popup-pulltab": {
+    "top": 0.522,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "popup-vfold": {
+    "top": 0.296,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "physics-circuit": {
+    "top": 0.449,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "physics-lever": {
+    "top": 0.349,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "physics-newton-cradle": {
+    "top": 0.107,
+    "left": 0.08,
+    "right": 0.92
+  },
+  "physics-pulley": {
+    "top": 0.05,
+    "left": 0.104,
+    "right": 0.896
+  },
+  "mech-four-stroke": {
+    "top": 0.05,
+    "left": 0.342,
+    "right": 0.658
+  },
+  "mech-pin-tumbler": {
+    "top": 0.05,
+    "left": 0.211,
+    "right": 0.789
+  },
+  "mech-planetary": {
+    "top": 0.42,
+    "left": 0.08,
+    "right": 0.92
+  }
+}

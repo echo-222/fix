@@ -3,10 +3,158 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#ece9e3" />
-    <title>修理工 · 3D 说明书</title>
+    <meta name="theme-color" content="#ffffff" />
+    <title>懂了 Dongle · 3D 说明书社区</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- 等待页写在 HTML 里：脚本还没下载完就能看到，main.tsx 渲染好首屏后淡出。和全站一样：纯白底，凸起 / 凹陷靠阴影，辅助色黑、灰、奶黄 -->
+    <style>
+      #splash {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        overflow-y: auto;
+        background: #fff;
+        color: #161616;
+        font-family: 'Inter', 'SF Pro Text', -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+        transition: opacity 0.45s ease, visibility 0.45s;
+      }
+      #splash.is-out { opacity: 0; visibility: hidden; }
+      .splash-inner { display: flex; flex-direction: column; align-items: center; margin: auto; padding: 24px 0; transform: translateY(-4vh); transition: transform 0.45s ease; }
+      /* 没登录：等待页原地变成登录页。灯泡停在亮着的样子（不要光晕，和 logo.svg 一样）、缩小一点，进度条换成登录表单（main.tsx 往 #splash-auth 里渲染） */
+      #splash.is-auth .splash-inner { transform: none; }
+      #splash.is-auth .splash-art { width: 96px; height: 96px; }
+      #splash.is-auth .splash-art * { animation: none !important; }
+      #splash.is-auth .splash-art .halo { opacity: 0; }
+      #splash.is-auth .splash-art .ray { stroke-dashoffset: 0; }
+      #splash.is-auth .splash-brand { margin-top: 22px; }
+      #splash.is-auth .splash-bar, #splash.is-auth .splash-tip { display: none; }
+      #splash:not(.is-auth) #splash-auth { display: none; }
+      #splash.is-offline .splash-bar i { animation: none; left: 31%; background: #d0d0cc; box-shadow: none; }
+      .splash-tip a { color: #161616; font-weight: 700; }
+      /* 灯泡落下，灯丝一笔笔写出发光的 dongle；写完玻璃亮起、背后起光晕，五道光芒从中间往两边画出来 = 「懂了」。
+         icons:start / icons:end 之间（灯丝三笔的 keyframes、整个 SVG）由 npm run icons 生成，别手改 */
+      .splash-art { width: 112px; height: 112px; overflow: visible; transition: width 0.45s ease, height 0.45s ease; }
+      .splash-art .bulb { animation: splash-bulb 3.2s cubic-bezier(0.65, 0, 0.35, 1) infinite both; }
+      .splash-art .glass { fill: #f8e8a8; animation: splash-glass 3.2s ease infinite both; }
+      .splash-art .halo { fill: #f8e8a8; opacity: 0; filter: blur(1.2px); transform-box: fill-box; transform-origin: center; animation: splash-halo 3.2s ease-out infinite both; }
+      .splash-art .fil use { stroke-dasharray: 1; animation: 3.2s linear infinite both; }
+      .splash-art .fil .w0 { animation-name: splash-w0; }
+      .splash-art .fil .w1 { animation-name: splash-w1; }
+      .splash-art .fil .w2 { animation-name: splash-w2; }
+      .splash-art .ray { fill: none; stroke: #161616; stroke-width: 0.9; stroke-linecap: round; stroke-dasharray: 1; animation: splash-ray 3.2s ease-out infinite both; }
+      .splash-art .r1, .splash-art .r3 { animation-delay: 0.06s; }
+      .splash-art .r0, .splash-art .r4 { animation-delay: 0.12s; }
+      @keyframes splash-bulb {
+        0% { transform: translateY(-2.4px); opacity: 0; }
+        10% { opacity: 1; }
+        14% { transform: translateY(0.3px); }
+        18%, 82% { transform: none; opacity: 1; }
+        96%, 100% { transform: translateY(-2.4px); opacity: 0; }
+      }
+      @keyframes splash-glass {
+        0%, 52% { fill: #efefec; }
+        56%, 82% { fill: #f8e8a8; }
+        90%, 100% { fill: #efefec; }
+      }
+      @keyframes splash-halo {
+        0%, 52% { opacity: 0; transform: scale(0.7); }
+        62%, 78% { opacity: 0.85; transform: scale(1.12); }
+        90%, 100% { opacity: 0; transform: scale(0.8); }
+      }
+      /* icons:start */
+      @keyframes splash-w0 {
+        0%, 18% { stroke-dashoffset: 1; opacity: 0; }
+        18.3% { opacity: 1; }
+        25.26%, 82% { stroke-dashoffset: 0; opacity: 1; }
+        92%, 100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes splash-w1 {
+        0%, 26.46% { stroke-dashoffset: 1; opacity: 0; }
+        26.76% { opacity: 1; }
+        35.25%, 82% { stroke-dashoffset: 0; opacity: 1; }
+        92%, 100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      @keyframes splash-w2 {
+        0%, 36.45% { stroke-dashoffset: 1; opacity: 0; }
+        36.75% { opacity: 1; }
+        52%, 82% { stroke-dashoffset: 0; opacity: 1; }
+        92%, 100% { stroke-dashoffset: 0; opacity: 0; }
+      }
+      /* icons:end */
+      @keyframes splash-ray {
+        0%, 54% { stroke-dashoffset: 1; opacity: 0; }
+        56% { opacity: 1; }
+        64%, 78% { stroke-dashoffset: 0; opacity: 1; }
+        88%, 100% { stroke-dashoffset: -1; opacity: 0; }
+      }
+      .splash-brand { margin-top: 30px; font-size: 22px; font-weight: 900; letter-spacing: 3px; }
+      .splash-brand small { margin-left: 6px; font-size: 13px; font-weight: 800; letter-spacing: 1px; color: #a8a8a8; }
+      .splash-sub { margin-top: 6px; font-size: 12px; color: #a8a8a8; letter-spacing: 1px; }
+      .splash-bar {
+        position: relative;
+        width: 148px;
+        height: 10px;
+        margin-top: 22px;
+        border-radius: 10px;
+        background: #f5f5f3;
+        box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px #fff;
+        overflow: hidden;
+      }
+      .splash-bar i { position: absolute; top: 2px; bottom: 2px; width: 38%; border-radius: 6px; background: #161616; box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); animation: splash-bar 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite; }
+      @keyframes splash-bar { from { left: -40%; } to { left: 100%; } }
+      .splash-tip { margin-top: 12px; font-size: 11.5px; color: #a8a8a8; min-height: 1em; }
+      @media (prefers-reduced-motion: reduce) {
+        .splash-art *, .splash-bar i { animation: none !important; }
+        .splash-art .halo { opacity: 0.85; transform: scale(1.12); }
+        .splash-art .ray { stroke-dashoffset: 0; }
+        .splash-bar i { left: 30%; }
+      }
+    </style>
   </head>
   <body>
+    <div id="splash" role="status" aria-label="正在加载">
+      <div class="splash-inner">
+        <!-- icons:start -->
+        <svg class="splash-art" viewBox="0 0 32 32" aria-hidden="true">
+          <defs>
+            <filter id="splash-glow" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="0.68" /></filter>
+            <path id="splash-w0" d="M11.16 14.11C11.16 14.11 11.09 13.88 11.01 13.8C10.93 13.72 10.79 13.68 10.69 13.65C10.59 13.63 10.49 13.63 10.39 13.65C10.29 13.68 10.16 13.75 10.08 13.8C10 13.85 9.98 13.88 9.93 13.96C9.88 14.04 9.8 14.16 9.77 14.26C9.74 14.36 9.74 14.47 9.77 14.57C9.8 14.67 9.85 14.8 9.93 14.88C10.01 14.96 10.13 15.01 10.23 15.04C10.33 15.07 10.44 15.07 10.54 15.04C10.64 15.01 10.77 14.96 10.85 14.88C10.93 14.8 10.83 15.08 11.01 14.57C11.19 14.06 11.92 11.8 11.92 11.8C11.92 11.8 11.44 13.21 11.31 13.65C11.18 14.09 11.19 14.21 11.16 14.42C11.13 14.63 11.13 14.78 11.16 14.88C11.19 14.98 11.26 15.01 11.31 15.04C11.36 15.07 11.38 15.07 11.46 15.04C11.54 15.01 11.69 14.93 11.77 14.88C11.85 14.83 11.84 14.83 11.92 14.73C12 14.63 12.24 14.26 12.24 14.26" pathLength="1" />
+            <path id="splash-w1" d="M13.15 13.65C13.15 13.65 12.95 13.63 12.85 13.65C12.75 13.68 12.62 13.75 12.54 13.8C12.46 13.85 12.44 13.88 12.39 13.96C12.34 14.04 12.26 14.16 12.23 14.26C12.2 14.36 12.2 14.47 12.23 14.57C12.26 14.67 12.31 14.8 12.39 14.88C12.47 14.96 12.59 15.01 12.69 15.04C12.79 15.07 12.9 15.07 13 15.04C13.1 15.01 13.23 14.93 13.31 14.88C13.39 14.83 13.42 14.81 13.47 14.73C13.52 14.65 13.59 14.52 13.62 14.42C13.64 14.32 13.64 14.21 13.62 14.11C13.59 14.01 13.55 13.88 13.47 13.8C13.39 13.72 13.23 13.65 13.15 13.65C13.07 13.65 13.03 13.72 13 13.8C12.97 13.88 12.97 14.01 13 14.11C13.03 14.21 13.07 14.34 13.15 14.42C13.23 14.5 13.34 14.54 13.47 14.57C13.6 14.6 13.8 14.6 13.93 14.57C14.06 14.54 14.16 14.47 14.23 14.42C14.3 14.37 14.35 14.29 14.38 14.26C14.41 14.23 14.34 14.34 14.39 14.26C14.44 14.18 14.59 13.9 14.69 13.8C14.79 13.7 14.92 13.65 15 13.65C15.08 13.65 15.13 13.75 15.16 13.8C15.19 13.85 15.19 13.83 15.16 13.96C15.13 14.09 15.05 14.39 15 14.57C14.95 14.75 14.85 15.04 14.85 15.04C14.85 15.04 14.95 14.7 15 14.57C15.05 14.44 15.08 14.39 15.16 14.26C15.24 14.13 15.36 13.9 15.46 13.8C15.56 13.7 15.67 13.68 15.77 13.65C15.87 13.63 16 13.63 16.08 13.65C16.16 13.68 16.21 13.72 16.24 13.8C16.27 13.88 16.27 13.98 16.24 14.11C16.21 14.24 16.11 14.44 16.08 14.57C16.05 14.7 16.05 14.8 16.08 14.88C16.11 14.96 16.19 15.01 16.24 15.04C16.29 15.07 16.32 15.07 16.39 15.04C16.46 15.01 16.61 14.93 16.69 14.88C16.77 14.83 16.77 14.83 16.85 14.73C16.93 14.63 17.15 14.26 17.15 14.26" pathLength="1" />
+            <path id="splash-w2" d="M18.54 14.11C18.54 14.11 18.47 13.88 18.39 13.8C18.31 13.72 18.18 13.68 18.08 13.65C17.98 13.63 17.87 13.63 17.77 13.65C17.67 13.68 17.54 13.75 17.46 13.8C17.38 13.85 17.36 13.88 17.31 13.96C17.26 14.04 17.18 14.16 17.16 14.26C17.14 14.36 17.14 14.47 17.16 14.57C17.18 14.67 17.23 14.8 17.31 14.88C17.39 14.96 17.52 15.01 17.62 15.04C17.72 15.07 17.83 15.07 17.93 15.04C18.03 15.01 18.15 14.93 18.23 14.88C18.31 14.83 18.31 14.94 18.39 14.73C18.47 14.53 18.69 13.65 18.69 13.65C18.69 13.65 18.54 14.27 18.39 14.73C18.24 15.19 17.9 16.09 17.77 16.42C17.64 16.75 17.7 16.64 17.62 16.72C17.54 16.8 17.39 16.88 17.31 16.88C17.23 16.88 17.18 16.8 17.16 16.72C17.14 16.64 17.14 16.55 17.16 16.42C17.18 16.29 17.21 16.11 17.31 15.96C17.41 15.81 17.62 15.63 17.77 15.5C17.92 15.37 18.1 15.27 18.23 15.19C18.36 15.11 18.41 15.12 18.54 15.04C18.67 14.96 18.85 14.86 19 14.73C19.15 14.6 19.33 14.41 19.46 14.26C19.59 14.11 19.64 14.01 19.77 13.8C19.9 13.6 20.13 13.21 20.23 13.03C20.33 12.85 20.33 12.86 20.38 12.73C20.43 12.6 20.51 12.4 20.54 12.27C20.57 12.14 20.57 12.04 20.54 11.96C20.51 11.88 20.46 11.8 20.38 11.8C20.3 11.8 20.16 11.88 20.08 11.96C20 12.04 19.97 12.12 19.92 12.27C19.87 12.42 19.82 12.6 19.77 12.88C19.72 13.16 19.64 13.63 19.62 13.96C19.6 14.29 19.6 14.7 19.62 14.88C19.64 15.06 19.72 15.01 19.77 15.04C19.82 15.07 19.84 15.07 19.92 15.04C20 15.01 20.15 14.93 20.23 14.88C20.31 14.83 20.28 14.76 20.38 14.73C20.48 14.71 20.72 14.76 20.85 14.73C20.98 14.7 21.07 14.62 21.15 14.57C21.23 14.52 21.26 14.5 21.31 14.42C21.36 14.34 21.44 14.21 21.46 14.11C21.48 14.01 21.48 13.88 21.46 13.8C21.44 13.72 21.36 13.68 21.31 13.65C21.26 13.63 21.23 13.63 21.15 13.65C21.07 13.68 20.93 13.72 20.85 13.8C20.77 13.88 20.72 13.98 20.69 14.11C20.66 14.24 20.66 14.44 20.69 14.57C20.72 14.7 20.77 14.8 20.85 14.88C20.93 14.96 21.05 15.01 21.15 15.04C21.25 15.07 21.36 15.07 21.46 15.04C21.56 15.01 21.69 14.93 21.77 14.88C21.85 14.83 21.85 14.83 21.93 14.73C22.01 14.63 22.23 14.26 22.23 14.26" pathLength="1" />
+          </defs>
+          <circle class="halo" cx="16" cy="13.89" r="8.86" />
+          <g class="bulb" stroke="#161616" stroke-width="0.85" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M14.42 27.75L14.9 29.07Q16 29.68 17.1 29.07L17.58 27.75z" fill="#161616" />
+            <path class="glass" d="M12.84 22.75C12.84 20.12 8.37 18.89 8.37 13.89A7.63 7.63 0 0 1 23.63 13.89C23.63 18.89 19.16 20.12 19.16 22.75z" />
+            <path d="M10.64 11.94A5.7 5.7 0 0 1 13.32 8.86" fill="none" stroke="#fff" stroke-width="0.72" />
+            <path d="M10.3 15.04L14.86 23.28M22.23 14.26L17.14 23.28" fill="none" stroke-width="0.34" />
+            <g class="fil" fill="none">
+              <use class="glow w0" href="#splash-w0" stroke="#ffc23d" stroke-width="1.7" filter="url(#splash-glow)" />
+              <use class="glow w1" href="#splash-w1" stroke="#ffc23d" stroke-width="1.7" filter="url(#splash-glow)" />
+              <use class="glow w2" href="#splash-w2" stroke="#ffc23d" stroke-width="1.7" filter="url(#splash-glow)" />
+              <use class="core w0" href="#splash-w0" stroke="#d9650a" stroke-width="0.5" />
+              <use class="core w1" href="#splash-w1" stroke="#d9650a" stroke-width="0.5" />
+              <use class="core w2" href="#splash-w2" stroke="#d9650a" stroke-width="0.5" />
+            </g>
+            <path d="M12.84 22.75A3.16 1.18 0 0 0 19.16 22.75V27.14A3.16 1.18 0 0 1 12.84 27.14z" fill="#e4e4e1" />
+            <path d="M12.84 24.25A3.16 1.18 0 0 0 19.16 24.25M12.84 25.74A3.16 1.18 0 0 0 19.16 25.74" fill="none" stroke-width="0.42" />
+          </g>
+          <path class="ray r0" d="M7.26 10.71L5.53 10.08" pathLength="1" />
+          <path class="ray r1" d="M10.67 6.28L9.61 4.77" pathLength="1" />
+          <path class="ray r2" d="M16 4.6L16 2.75" pathLength="1" />
+          <path class="ray r3" d="M21.33 6.28L22.39 4.77" pathLength="1" />
+          <path class="ray r4" d="M24.74 10.71L26.47 10.08" pathLength="1" />
+        </svg>
+        <!-- icons:end -->
+        <div class="splash-brand">懂了<small>Dongle</small></div>
+        <div class="splash-sub">看得懂的 3D 说明书社区</div>
+        <div id="splash-auth"></div>
+        <div class="splash-bar"><i></i></div>
+        <div class="splash-tip" id="splash-tip">正在准备说明书…</div>
+      </div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

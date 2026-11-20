@@ -1,0 +1,18 @@
+{
+  "note": "用官方产品图生成（来源见 refs/sources.json；图片不进 git）。整机一个模型：苏宁小米自营旗舰店的透明底正面主图铺白底、补成正方形后单图生成，本地 optimize 到约 4 万面。脚本里同一个 GLB 挂两个零件：底座（crop 球体以下）和头部（crop 球体），头部绕球心转动。",
+  "jobs": [
+    {
+      "name": "camera",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/xiaomi-camera-c400/refs/camera-front.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

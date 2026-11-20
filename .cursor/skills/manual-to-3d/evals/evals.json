@@ -1,0 +1,29 @@
+{
+  "skill_name": "manual-to-3d",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把这份蓝牙鼠标说明书（5 页照片）做成懂了 Dongle 里的 3D 交互演示：包装清点、USB-A / Type-C / 蓝牙连接、充电、连不上排查。",
+      "expected_output": "新增 ManualSpec 脚本并注册到 MANUALS；有逐页转写；插入用 plug；npm run check:manuals 输出 audit passed；npm run shoot 生成逐步截图且人工看过；交付说明含指南步数与推断项。参考 mouse-bt54。",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "这份台灯说明书第 3 页写：把电源线插入底座背面的 DC 口，指示灯常亮。请加进现有台灯演示。",
+      "expected_output": "底座有 hole 作 DC 口；线缆插头用 plug 插入；指示灯 light:on 且镜头或 zoom 能看到正面；该步有 page:3；check:manuals audit passed。",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "把宜家同款固定尺寸边几的组装说明做成 3D 演示（不是参数化光轴家具）。",
+      "expected_output": "走场景脚本分流（非 desk/shaft 生成器）；零件用 box/slab/cylinder；组装步用 via/lift 移到安装位；kind:assembly；审计与截图验证通过。",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "给这台空调的遥控器加外观模型，产品图是带全部按键和液晶屏的正面照；说明书里每一步都要按某个键、看液晶。",
+      "expected_output": "一物一画：按键和液晶归为几何体，不写 baked；生成前用 scripts/ref-cover.mjs 把参考图里的按键区和液晶按外壳颜色抹平，或者判断抹平后只剩光板、外形简单，整只遥控器直接用几何体；不出现「模型自带按键 + 几何按键」两层；几何按键按照片的真实位置和形状排；check:manuals 无 baked 警告；shoot --real 截图里按键只有一层。",
+      "files": []
+    }
+  ]
+}

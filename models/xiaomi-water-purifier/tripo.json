@@ -1,0 +1,57 @@
+{
+  "note": "用官方产品图生成（来源见 refs/sources.json；图片不进 git）。主机用苏宁小米自营旗舰店「基本参数」图里的左前 3/4 视角（防尘盖装着），前盖在场景里用 crop 从同一个模型切出来；纯净水龙头用主图 1 里和主机并排的那只（把压在主机侧面上的出水嘴单独抠出）；两支滤芯用滤芯商品页的白底正视图。生成后本地 optimize 到约 3 万面。",
+  "jobs": [
+    {
+      "name": "purifier",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/xiaomi-water-purifier/refs/purifier.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "faucet",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/xiaomi-water-purifier/refs/faucet.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "ppc",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/xiaomi-water-purifier/refs/ppc.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "ro",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/xiaomi-water-purifier/refs/ro.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

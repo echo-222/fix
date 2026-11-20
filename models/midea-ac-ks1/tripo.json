@@ -1,0 +1,18 @@
+{
+  "note": "用官方产品图生成（来源见 refs/sources.json；图片不进 git）。室内机用美的商城 KFR-35GW/N8KS1-1 主图里的右侧 3/4 合盖图，面板上的显示屏数字和网络图标涂成面板底色（场景里用文字 / 指示灯叠加，按步骤亮灭），补成正方形。生成后本地 optimize 到约 4 万面。遥控器不生成：液晶和按键都要单独按、高亮，只能是几何体；照带按键的正面图（remote-front.png）生成的模型自带一套按键，和几何按键叠两层；把液晶和按键区抹平后（remote-body.jpg）再生成，Tripo 认不出光板，出了一块带把手的歪板（2026-11，40 积分），所以整只遥控器用几何体。",
+  "jobs": [
+    {
+      "name": "indoor",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/midea-ac-ks1/refs/ac-3q.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归小米 / 零售商所有，只在本地用作生成输入，不进 git、不放 public/。全部来自苏宁上的小米官方店铺（小米苏宁自营旗舰店、小米智能电器旗舰店、小米智能苏宁专卖店）商品主图 / 详情图；处理脚本 refs/clean.py（PIL：裁切、涂白、补正方形、放大）。",
+  "fetched": "2026-11-02",
+  "products": {
+    "purifier": {
+      "product": "米家净水器 1000G（MR1082，白色）主机",
+      "page": "https://product.suning.com/0000000000/000000012439652232.html",
+      "files": {
+        "suning/m1.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/TeIWw8ilT0qsF4amBmcqzQ.jpg",
+        "suning/m2.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/b7Z7wpZBtdpeSQu9S8szoQ.jpg",
+        "suning/m3.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/c4rwnYRdjSD5aMGcyyk8TA.jpg",
+        "suning/m4.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/ikRRz2ffhXJ_IfS7zV30sw.jpg",
+        "suning/m5.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/jFFitD2wP-SurKgsd60_HQ.jpg",
+        "suning/m6.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/tKwMi1-JvfEKBQwG1FPaLQ.jpg",
+        "suning/d09.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/_oFwMj4mgTlInHs9EzxLhA.jpg"
+      },
+      "derived": {
+        "purifier.png": "m4（「基本参数」图，主机左前 3/4 视角）：逐行找主机轮廓，轮廓外的尺寸线、403.2mm / 434mm 标注、表格涂白；裁 (425,226)–(765,632)，补成正方形放大到 1024；d09（官方安装示意图）只用来核对插座 / 角阀 / 地漏的相对位置"
+      }
+    },
+    "faucet": {
+      "product": "米家净水器 1000G 随机附带的纯净水龙头（带 TDS 显示屏）",
+      "page": "https://product.suning.com/0000000000/000000012439652232.html",
+      "files": {
+        "suning/m1.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/TeIWw8ilT0qsF4amBmcqzQ.jpg"
+      },
+      "derived": {
+        "faucet.png": "m1（主图 1，主机 + 龙头）：x<590 的主机侧面像素（亮度 ≥ 212，或 y>248 的全部）涂白，只留下压在主机上的出水嘴；裁 (540,150)–(712,490)，放大 3 倍 + 锐化，补成正方形"
+      }
+    },
+    "ppc": {
+      "product": "小米净水器复合滤芯 PPC5（米家净水器 1000G 上层滤芯）",
+      "page": "https://product.suning.com/0071294896/12408578081.html",
+      "files": {
+        "ppc/m1.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/3ZoFGm7245jDzYodZCx0vQ.jpg",
+        "ppc/m4.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/ksIfU_egEDNWV5odIK9CKA.jpg"
+      },
+      "derived": {
+        "ppc.png": "ppc/m1（白底正视图）原样补成正方形；m4 是「从机器顶部卡槽掀开前盖」的换芯示意图，只用来核对前盖开法"
+      }
+    },
+    "ro": {
+      "product": "小米净水器 1000G 反渗透滤芯 RO1（米家净水器 1000G 下层滤芯）",
+      "page": "https://product.suning.com/0010346179/12408684230.html",
+      "files": {
+        "ro/m3.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/nVVxoEF2Vk4ua8lQB1V7mw.jpg",
+        "ro/m5.png": "https://imgservice.suning.cn/uimg1/b2c/image/uI2sfLX-Vad0BA97b-NbwA.png"
+      },
+      "derived": {
+        "ro.png": "ro/m3（浅蓝底正视图）：从四角按「偏蓝且亮」泛洪把底色涂白，裁 (250,100)–(550,700)，补成正方形"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归北京智米电子科技有限公司 / 零售商所有，只在本地用作生成输入，不进 git、不放 public/。",
+  "fetched": "2026-11-02",
+  "products": {
+    "seat": {
+      "product": "智米智能马桶盖 S（ZNMTG02ZM，白色，519 × 390 × 131 mm）",
+      "page": "https://product.suning.com/0000000000/11891252264.html",
+      "shop": "苏宁易购 · 智米苏宁自营旗舰店",
+      "files": {
+        "cand/g1-big.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/DJliXIExmi6jiTe1ZVfXRg.jpg"
+      },
+      "derived": {
+        "seat-3q.png": "g1（800 × 800 白底主图，座盖打开的 3/4 视角）：涂白 smartmi 智米字样、左下遥控器 + 挂架、右侧手机与信号圈；遥控器挡住的座圈左外沿（顶面 + 侧面两条色带）按相邻像素颜色补齐；裁 (40,105)–(590,715)，补白成正方形后放大到 1024",
+        "seat-body.jpg": "seat-3q.png 转 JPEG 后用 scripts/ref-cover.mjs 按机身颜色抹平侧面控制板的四个键和指示灯 137,629,158,653 152,647,170,671 161,664,180,688 173,680,192,703 184,697,201,720、座圈顶上五个小灯 382,586,464,606（这些在说明书里是几何体）"
+      },
+      "others": {
+        "cand/g2…g8.jpg": "同一商品页主图（喷嘴、烘干、App、场景图），只用来核对外形",
+        "cand/s01…s23.jpg": "同一商品页详情图（uimgproxy.suning.cn/uimg1/sop/commodity/…，列表见 cand/suning-list.txt）；s17 基本参数里的俯视图用来核对 390 × 519 轮廓，s14 / s15 核对遥控器"
+      }
+    },
+    "remote": {
+      "product": "智米智能马桶盖 S 随附遥控器（6 列 × 2 行按键，AAA × 4）",
+      "note": "已不用来生成：遥控器改成整个几何体，这张图只用来对按键排布",
+      "page": "https://product.suning.com/0000000000/11891252264.html",
+      "files": {
+        "cand/g1-big.jpg": "https://imgservice.suning.cn/uimg1/b2c/image/DJliXIExmi6jiTe1ZVfXRg.jpg"
+      },
+      "derived": {
+        "remote-front.png": "g1 左下的遥控器（挂在挂架上的正面）裁 (72,586)–(288,686)，放大 4 倍 + 锐化；涂掉挂架左右两片和底沿，右端被挂架挡住的边框按原边框颜色补画，补白成正方形后放大到 1024"
+      }
+    }
+  }
+}

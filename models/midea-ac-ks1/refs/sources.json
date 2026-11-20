@@ -1,0 +1,32 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归美的集团所有，只在本地用作生成输入，不进 git、不放 public/。",
+  "fetched": "2026-11-02",
+  "products": {
+    "indoor": {
+      "product": "美的 酷省电 KFR-35GW/N8KS1-1 室内机（新一级能效 1.5 匹，极地白）",
+      "page": "https://www.midea.cn/30/1000000000400731406920.html",
+      "files": {
+        "cand/g1.jpg": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260319/f633aab1145d809035bb16b821bc6bc7.jpg",
+        "cand/g5.jpg": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260319/22eadaf9cdf281a8a7572aec5eb594a7.jpg",
+        "cand/g6.jpg": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260319/844cd7b6b42ba96751b1a3a986a0bddb.jpg",
+        "cand/g7.jpg": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260319/ab3f5c19510fb48a4fcaad149373668c.jpg",
+        "cand/detail/d22.png": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260707/69f2ce5535313fa5da2f5eab2d155900.png",
+        "cand/detail/d23.png": "https://oss-accelerate-ga.midea.com/vision-material-628-public-prd-g5-cdn/material_gpim/20260707/d306c5aae88571d98c6759b8742c7bf3.png"
+      },
+      "derived": {
+        "ac-3q.png": "g5（右侧 3/4、导风板合上）把显示屏「26.0」和网络图标区域 (765,488)–(850,535) 按左右两侧像素逐行插值涂成面板底色，再裁 (60,39)–(1120,1099) 成正方形"
+      }
+    },
+    "remote": {
+      "product": "美的 / 华凌 RN10L 系列空调遥控器（与说明书第 4、6–9 页的遥控器同一外壳、同一键位：⏻ / 模式 / 酷省电 · 功能 确定 定时 ∧∨ · 风速 上下风 左右风 · 防直吹 屏显 电辅热）",
+      "page": "https://www.midea.cn/157/1000000000400751348513.html",
+      "files": {
+        "cand/r1.png": "https://dsdcp.smartmidea.net/mcsp/prod/20250902/18602ca86fc049ee835af6a0c34a6bde.png"
+      },
+      "derived": {
+        "remote-front.png": "r1 左半边的「旧版」遥控器：底部品牌字样 (162,612)–(262,656) 逐行插值涂成机身底色，去掉图注「旧版」，居中补成 780 × 780 白底正方形。现在只用来量几何按键的位置",
+        "remote-body.jpg": "remote-front.png 的液晶 (328,100)–(452,288) 和按键区 (320,311)–(464,558) 用 scripts/ref-cover.mjs 抹平；生成失败（认不出光板），没有采用"
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "camera": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "be485204-d542-4b54-a863-44635cd951ad",
+        "credits": 40,
+        "seconds": 149,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_eb2adff6-6918-42bc-bd96-193596fb99b9"
+        },
+        "file": "models/xiaomi-camera-c400/raw/camera-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 8,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-camera-c400/raw/camera-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T04:10:32.551Z",
+    "file": "public/models/xiaomi-camera-c400/camera.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T04:13:13.107Z"
+  }
+}

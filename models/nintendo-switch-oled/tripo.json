@@ -1,0 +1,33 @@
+{
+  "note": "用任天堂官方产品图生成（来源见 refs/sources.json；图片不进 git）。主机取美国官方商店「Joy-Con 取下」图里斜靠在支架上的那台：支架、右侧两只 Joy-Con 涂白后裁出主机，支架另建几何体（桌面模式才打开）。左右 Joy-Con 取腾讯官网规格图（白色 OLED 套装，无腕带）的正面，红色引线 / 编号 / 圆点按邻域颜色补掉，被圆点盖住的 − 键重画成深色短条，放大 3 倍 + 锐化；右 Joy-Con 的 ABXY 和 Home 键再用 scripts/ref-cover.mjs 抹平（refs/joycon-r-body.jpg，相邻的键先盖 Y、再盖 X/A/B、各补一遍，免得边缘采到别的键），这几个键在说明书里是几何体。基座取美国官方商店「Dock - OLED Model - White」3/4 正面图。生成后本地 optimize 到约 4 万面。",
+  "jobs": [
+    {
+      "name": "console",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nintendo-switch-oled/refs/console-3q.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "joycon-l",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nintendo-switch-oled/refs/joycon-l-front.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "joycon-r",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nintendo-switch-oled/refs/joycon-r-body.jpg", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "dock",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nintendo-switch-oled/refs/dock-3q.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

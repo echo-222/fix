@@ -19,11 +19,18 @@ const portWorld = (z: number): Vec3 => [PORT.x, PORT.y, BASE_Z + z]
 // ---------- 鼠标姿态 ----------
 const HOME: PartState = { parent: null, at: [250, 0, 30], rot: [0, 0, 0] }
 const FLIP: PartState = { parent: null, at: [250, M.h, 30], rot: [0, 0, 180], lift: 45, dur: 1.4 }
-const NEAR: PartState = { parent: null, at: [-235, 0, -40], rot: [0, -60, 0], lift: 45, dur: 1.6 }
+/** 笔记本左右两侧之间来回时从笔记本前方绕过去，不从机身上穿过 */
+const FRONT: Vec3 = [-60, 30, 210]
+const NEAR: PartState = { parent: null, at: [-265, 0, -40], rot: [0, -60, 0], via: FRONT, lift: 30, dur: 1.8 }
+const HOME_FROM_NEAR: PartState = { ...HOME, via: FRONT, lift: 20, dur: 1.8 }
+const FLIP_FROM_NEAR: PartState = { ...FLIP, via: FRONT, dur: 1.8 }
+/** 翻面后从收纳仓竖直拔出接收器（收纳仓正上方的世界坐标），再放到一旁 */
+const PULL_A: Vec3 = [253, 52, 66]
+const PULL_C: Vec3 = [253, 52, 49]
 
-// ---------- 开关位置（鼠标局部） ----------
-const MODE = { y: -0.8, z: -31, bt: 7.5, g24: 0.5 }
-const POWER = { y: -0.8, z: -14, off: -15.5, on: -10.5 }
+// ---------- 开关位置（鼠标局部）：拨钮凸出底面 0.45 mm，鼠标平放时不顶着桌面 ----------
+const MODE = { y: 0.35, z: -31, bt: 7.5, g24: 0.5 }
+const POWER = { y: 0.35, z: -14, off: -15.5, on: -10.5 }
 const modeAt = (x: number): PartState => ({ at: [x, MODE.y, MODE.z], dur: 0.5 })
 const powerAt = (x: number): PartState => ({ at: [x, POWER.y, POWER.z], dur: 0.5 })
 
@@ -128,9 +135,9 @@ const parts: SpecPart[] = [
   { id: 'status-led', name: '底部指示灯', parent: 'mouse', shape: { type: 'led', r: 1.6, color: YELLOW }, at: [9, -0.05, -2], rot: bottomRot },
   { id: 'bay', name: '接收器收纳仓', parent: 'mouse', shape: { type: 'hole', w: 34, h: 36, r: 3 }, at: [0, -0.05, 28], rot: bottomRot },
 
-  // 接收器：原点在插头与外壳交界处，插头朝 +x
-  { id: 'recv-c', name: 'Type-C 接收器', spec: '2.4G', parent: 'mouse', shape: plugC(10), at: [-3, 1.75, 19] },
-  { id: 'recv-a', name: 'USB-A 接收器', spec: '2.4G · 1.6 g', parent: 'mouse', shape: plugA(7), at: [-3, 2, 36] },
+  // 接收器：原点在插头与外壳交界处，插头朝 +x；收纳时底面与鼠标底面齐平
+  { id: 'recv-c', name: 'Type-C 接收器', spec: '2.4G', parent: 'mouse', shape: plugC(10), at: [-3, 2.8, 19] },
+  { id: 'recv-a', name: 'USB-A 接收器', spec: '2.4G · 1.6 g', parent: 'mouse', shape: plugA(7), at: [-3, 3.05, 36] },
 
   // 充电线
   { id: 'cable-a', name: '充电线 USB 端', shape: plugA(18), at: [-30, 4, 190], rot: [0, -160, 0], visible: false },
@@ -185,7 +192,7 @@ function pairSteps(prefix: string, recv: 'recv-a' | 'recv-c', portZ: number, pag
       id: `${prefix}-use`, title: '开始使用', page,
       desc: '鼠标放回桌面即可正常使用，光标跟随移动。2.4G 无线接收距离 3–10 米。',
       camera: USE_VIEW,
-      set: { mouse: { ...HOME, lift: 20, dur: 1.4 }, screen: { ui: DESKTOP } },
+      set: { mouse: HOME_FROM_NEAR, screen: { ui: DESKTOP } },
       actions: [{ type: 'glide' as const, part: 'mouse' }],
       highlight: ['mouse'],
       chips: [{ label: '距离', sub: '3–10 m' }],
@@ -242,7 +249,7 @@ export const mouseBt54: ManualSpec = {
           desc: '包装内有：蓝牙无线鼠标、USB-A 接收器、Type-C 接收器、USB 充电线、说明书各 1 件。两个接收器收纳在鼠标底部。',
           camera: OVERVIEW, orbit: true,
           callouts: [
-            { part: 'mouse', text: '蓝牙无线鼠标 ×1', sub: '内含 USB-A / Type-C 接收器', at: [0, 20, 0], offset: [40, 90, 0] },
+            { part: 'mouse', text: '蓝牙无线鼠标 ×1', sub: '内含 USB-A / Type-C 接收器', at: [0, 20, 0], offset: [-20, 90, 0] },
             { part: 'cable-a', text: 'USB 充电线 ×1', offset: [30, 70, 20] },
             { part: 'booklet', text: '说明书 ×1', offset: [-30, 70, 20] },
           ],
@@ -255,8 +262,9 @@ export const mouseBt54: ManualSpec = {
           set: hide('booklet', 'cable', 'cable-a', 'cable-c'),
           highlight: ['wheel', 'dpi', 'charge-led'],
           actions: [{ type: 'spin', part: 'wheel', delay: 0.6 }, { type: 'press', part: 'dpi', delay: 1.2 }],
+          zoom: { target: 'dpi', offset: [0, 0, -6], dir: [0.55, 1, 0.75], dist: 95, caption: '滚轮 · DPI 键 · 充电灯' },
           callouts: [
-            { part: 'wheel', text: '滚轮 · 翻页键', offset: [-30, 30, -20] },
+            { part: 'wheel', text: '滚轮 · 翻页键', offset: [-44, 16, -6] },
             { part: 'dpi', text: 'DPI 键', sub: '1000–3200 五档循环', offset: [48, 30, -10] },
             { part: 'charge-led', text: '充电指示灯', offset: [48, 6, 24] },
             { part: 'mouse', text: '左键', at: [-14, 17, -32], offset: [-42, 10, 12] },
@@ -281,7 +289,7 @@ export const mouseBt54: ManualSpec = {
           id: 'take-a', title: '取出 USB-A 接收器', page: 3,
           desc: '从鼠标底部的收纳仓拔出 USB-A 接收器。',
           camera: { ...MOUSE_BOTTOM, offset: [-10, 10, 25], dist: 340 },
-          set: { 'recv-a': { parent: null, at: [205, 42, 70], rot: [0, 0, 0], lift: 20, dur: 1.2 } },
+          set: { 'recv-a': { parent: null, at: [205, 42, 70], rot: [0, 0, 0], via: PULL_A, dur: 1.2 } },
           highlight: ['recv-a'],
         },
         {
@@ -289,7 +297,7 @@ export const mouseBt54: ManualSpec = {
           desc: '把 USB-A 接收器插入电脑的 USB 端口，电脑会自动识别并安装驱动。',
           camera: PORTS,
           set: {
-            'recv-a': { parent: 'laptop', at: [PORT.x, PORT.y, PORT.a2], rot: [0, 0, 0], via: [-215, 12, BASE_Z + PORT.a2], dur: 1.8 },
+            'recv-a': { plug: { hole: 'port-la2', back: 55 }, lift: 25, dur: 1.8 },
             screen: { ui: NEW_DEVICE, delay: 1.9 },
           },
           highlight: ['recv-a', 'port-la2'],
@@ -309,7 +317,7 @@ export const mouseBt54: ManualSpec = {
           id: 'c-take', title: '取出 Type-C 接收器', page: 4,
           desc: '翻到鼠标底部，拔出 Type-C 接收器。',
           camera: MOUSE_BOTTOM,
-          set: { mouse: FLIP, 'recv-c': { parent: null, at: [205, 42, 80], rot: [0, 0, 0], lift: 20, delay: 1.5, dur: 1.2 } },
+          set: { mouse: FLIP, 'recv-c': { parent: null, at: [205, 42, 80], rot: [0, 0, 0], via: PULL_C, delay: 1.5, dur: 1.2 } },
           highlight: ['recv-c'],
         },
         {
@@ -317,7 +325,7 @@ export const mouseBt54: ManualSpec = {
           desc: '选择电脑的 Type-C 端口插入接收器。',
           camera: { ...PORTS, target: portWorld(PORT.c), offset: [-30, 10, 10] },
           set: {
-            'recv-c': { parent: 'laptop', at: [PORT.x, PORT.y, PORT.c], rot: [0, 0, 0], via: [-215, 12, BASE_Z + PORT.c], dur: 1.8 },
+            'recv-c': { plug: { hole: 'port-lc', back: 55 }, lift: 25, dur: 1.8 },
             screen: { ui: NEW_DEVICE, delay: 1.9 },
           },
           highlight: ['recv-c', 'port-lc'],
@@ -404,8 +412,8 @@ export const mouseBt54: ManualSpec = {
           set: {
             mouse: { parent: null, at: [-250, 0, 110], rot: [0, -30, 0], lift: 30, dur: 1.4 },
             cable: { visible: true },
-            'cable-a': { visible: true, parent: 'laptop', at: [PORT.x, PORT.y, PORT.a2], rot: [0, 0, 0], delay: 1.2, dur: 1.4, lift: 30 },
-            'cable-c': { visible: true, parent: 'mouse', at: [0, 3.2, -57.5], rot: [0, -90, 0], delay: 1.2, dur: 1.4, lift: 30 },
+            'cable-a': { visible: true, plug: 'port-la2', delay: 1.2, dur: 1.4, lift: 30 },
+            'cable-c': { visible: true, plug: 'port-c', delay: 1.2, dur: 1.4, lift: 30 },
           },
           highlight: ['cable', 'cable-a', 'cable-c', 'port-c'],
           zoom: { target: 'port-c', dir: [0.9, 0.6, 0.3], dist: 110, caption: 'Type-C 插入鼠标前端' },
@@ -435,11 +443,12 @@ export const mouseBt54: ManualSpec = {
           camera: OVERVIEW,
           set: {
             'charge-led': { light: 'off' },
-            'cable-a': { parent: null, at: [-30, 4, 190], rot: [0, -160, 0], visible: false, dur: 1.2 },
-            'cable-c': { parent: null, at: [-120, 3, 150], rot: [0, 25, 0], visible: false, dur: 1.2 },
-            cable: { visible: false, dur: 1.2 },
+            'cable-a': { parent: null, at: [-30, 4, 190], rot: [0, -160, 0], via: [-240, 30, 80], visible: false, dur: 1.4 },
+            'cable-c': { parent: null, at: [-120, 3, 150], rot: [0, 25, 0], visible: false, dur: 1.4 },
+            cable: { visible: false, dur: 1.4 },
             mouse: { ...HOME, lift: 30, delay: 0.9, dur: 1.4 },
           },
+          highlight: ['cable-a', 'cable-c'],
           tip: '充电电压不可超过 5V，请使用电脑 USB 口或标准 USB 充电器。',
         },
       ],
@@ -447,7 +456,7 @@ export const mouseBt54: ManualSpec = {
     {
       id: 'troubleshoot', title: '连不上？逐项排查', kind: 'repair',
       start: {
-        'recv-a': { parent: 'laptop', at: [PORT.x - 4, PORT.y, PORT.a1] },
+        'recv-a': { plug: { hole: 'port-la1', depth: -4 } },
         'mode-knob': { at: [MODE.g24, MODE.y, MODE.z] },
       },
       steps: [
@@ -456,7 +465,7 @@ export const mouseBt54: ManualSpec = {
           desc: '先确认接收器已插入电脑 USB 口且接触良好；打开设备管理器，查看是否识别到鼠标并已自动安装驱动。',
           camera: PORTS,
           set: {
-            'recv-a': { at: [PORT.x, PORT.y, PORT.a1], dur: 0.8 },
+            'recv-a': { plug: { hole: 'port-la1', back: 0 }, dur: 0.8 },
             screen: {
               delay: 0.9,
               ui: {
@@ -499,7 +508,7 @@ export const mouseBt54: ManualSpec = {
           id: 'fx-port', title: '换一个 USB 口', page: 5,
           desc: '有黄灯但仍无法连接，可以把接收器换到电脑的另一个 USB 口再试。',
           camera: PORTS,
-          set: { 'recv-a': { at: [PORT.x, PORT.y, PORT.a2], via: [-205, 12, BASE_Z + (PORT.a1 + PORT.a2) / 2], dur: 1.8 } },
+          set: { 'recv-a': { plug: { hole: 'port-la2', back: 45 }, dur: 1.8 } },
           highlight: ['recv-a', 'port-la2'],
           zoom: zoomPort(PORT.a2, '换到另一个 USB 口'),
         },
@@ -515,7 +524,7 @@ export const mouseBt54: ManualSpec = {
           id: 'fx-replug', title: '重新配对 ② 拔插接收器', page: 5,
           desc: '把接收器从电脑上拔出，再重新插好。',
           camera: PORTS,
-          set: { 'recv-a': { at: [PORT.x, PORT.y, PORT.a2], via: [-222, 10, BASE_Z + PORT.a2], dur: 2 } },
+          set: { 'recv-a': { plug: { hole: 'port-la2', back: 60 }, dur: 2 } },
           highlight: ['recv-a'],
           zoom: zoomPort(PORT.a2, '拔出 → 重新插入'),
         },
@@ -536,9 +545,9 @@ export const mouseBt54: ManualSpec = {
           desc: '拨到蓝牙位置后，只有蓝灯闪烁时才能被电脑搜索到；蓝灯不闪烁请关闭电源再重新打开。Windows 电脑需支持蓝牙 4.0 以上。',
           camera: MOUSE_BOTTOM,
           set: {
-            mouse: FLIP,
-            'mode-knob': { ...modeAt(MODE.bt), delay: 1.5 },
-            'status-led': { light: 'blink', color: BLUE, delay: 2.1 },
+            mouse: FLIP_FROM_NEAR,
+            'mode-knob': { ...modeAt(MODE.bt), delay: 1.9 },
+            'status-led': { light: 'blink', color: BLUE, delay: 2.5 },
           },
           highlight: ['mode-knob', 'status-led'],
           zoom: zoomBottom('status-led', '蓝灯闪烁才能被搜索到'),

@@ -1,0 +1,42 @@
+# 装到服务器的 /etc/systemd/system/dongle.service
+[Unit]
+Description=懂了 Dongle（接口服务）
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dongle
+Group=dongle
+WorkingDirectory=/srv/dongle/current
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=3000
+Environment=DATA_DIR=/var/lib/dongle
+Environment=DIST_DIR=/srv/dongle/current/dist
+# 网页导入的说明书（发布出去的和草稿）和生成过程的中间文件，都在数据目录里，不随版本走
+Environment=IMPORT_DIR=/var/lib/dongle/imported
+Environment=IMPORT_WORK_DIR=/var/lib/dongle/import-work
+# 生成说明书时要起 Vite（读场景脚本、截图）、无头 Chrome（截图复核）、npx gltf-transform（模型减面）：
+# 代码目录是只读的，它们的缓存都放到 /var/cache/dongle
+Environment=HOME=/var/cache/dongle
+Environment=DONGLE_VITE_CACHE=/var/cache/dongle/vite
+Environment=npm_config_cache=/var/cache/dongle/npm
+Environment=npm_config_registry=https://registry.npmmirror.com
+Environment=npm_config_update_notifier=false
+Environment=CHROME_PATH=/opt/chrome-headless-shell-linux64/chrome-headless-shell
+# ADMIN_EMAILS、SMTP_*、AI_*、TRIPO_* 等写在这里，改完 systemctl restart dongle
+EnvironmentFile=-/etc/dongle.env
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning server/main.ts
+Restart=always
+RestartSec=2
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/dongle
+CacheDirectory=dongle
+
+[Install]
+WantedBy=multi-user.target

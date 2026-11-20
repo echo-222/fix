@@ -1,0 +1,104 @@
+{
+  "seat": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "5a618d74-fd92-4811-b849-56e0b3257c44",
+        "credits": 40,
+        "seconds": 360,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/seat-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 16,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/seat-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:25:24.414Z",
+    "file": "public/models/zhimi-toilet-seat-s/seat.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:25:56.830Z"
+  },
+  "remote": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "cbbc8d85-1146-4c2e-9068-60bb7d69e0c6",
+        "credits": 40,
+        "seconds": 188,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_d9d78bf7-c770-4a49-b9bd-2efa06d64ea6"
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/remote-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 6,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/remote-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:17.947Z",
+    "file": "public/models/zhimi-toilet-seat-s/remote.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:35.279Z"
+  },
+  "seat-with-buttons": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "f2ab75d5-74e8-4d2f-985d-cc3a293dc45d",
+        "credits": 40,
+        "seconds": 197,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_a4b25f3f-7dcc-4ce7-87ff-63c98f9ac588"
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/seat-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 6,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/zhimi-toilet-seat-s/raw/seat-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:17.943Z",
+    "file": "public/models/zhimi-toilet-seat-s/seat.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:44.972Z",
+    "note": "参考图里还带着按键，和几何体按键画成两层；换成抹平按键的参考图重新生成"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "dock": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "eee2cac1-b193-4267-bb17-d8d5ca982584",
+        "credits": 40,
+        "seconds": 202,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_88acdcc5-8027-4df3-9a36-9fd93eea26bf"
+        },
+        "file": "models/nintendo-switch-oled/raw/dock-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 4,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nintendo-switch-oled/raw/dock-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:50.367Z",
+    "file": "public/models/nintendo-switch-oled/dock.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:26:21.117Z"
+  },
+  "console": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "1cf6d5c4-14e4-4d8e-947a-e4b24ce2a0a8",
+        "credits": 40,
+        "seconds": 196,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_1b106b54-a98a-4143-afd0-38e86726815e"
+        },
+        "file": "models/nintendo-switch-oled/raw/console-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 4,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nintendo-switch-oled/raw/console-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:50.363Z",
+    "file": "public/models/nintendo-switch-oled/console.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:26:13.664Z"
+  },
+  "joycon-r": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "0993d9b0-8db6-4e3a-b3ca-7c81d423491e",
+        "credits": 40,
+        "seconds": 351,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-r-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 23,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-r-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:25:24.435Z",
+    "file": "public/models/nintendo-switch-oled/joycon-r.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:25:54.446Z"
+  },
+  "joycon-l": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "b05a2703-9637-4ca8-9560-88aae3d9c712",
+        "credits": 40,
+        "seconds": 3700,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_a24af411-6ff2-48dc-8d0b-3c7baefb947c"
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-l-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 22,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-l-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:50.366Z",
+    "file": "public/models/nintendo-switch-oled/joycon-l.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:24:59.806Z"
+  },
+  "joycon-r-with-buttons": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "e3c7e82e-d598-4c5f-ae79-319d55a0c2e0",
+        "credits": 40,
+        "seconds": 2142,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_fd8c21c3-3958-48f1-8e08-3a2bb296d2ae"
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-r-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 16,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nintendo-switch-oled/raw/joycon-r-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T06:33:19.946Z",
+    "file": "public/models/nintendo-switch-oled/joycon-r.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:33:36.184Z",
+    "note": "参考图里还带着按键，和几何体按键画成两层；换成抹平按键的参考图重新生成"
+  }
+}

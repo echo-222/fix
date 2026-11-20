@@ -1,0 +1,31 @@
+{
+  "note": "用官方产品图生成（来源见 refs/sources.json；图片不进 git）。P10 海外版叫 Q Revo，机器人与基座尺寸相同。基座用苏宁旗舰店「P10 智能上下水套装」的正视图（套件版顶部是平盖 + 加注口，水箱版顶上是两个水箱，不能混用），原图只有约 200 × 400 px，放大 3 倍后单图生成。机器人用 Q Revo 官方图里停在基座上的那台：按顶面轮廓拟合椭圆，把基座、底板、侧壁涂白，被塔身挡住的后半圈顶面按亮面颜色补齐（refs/robot-3q.png）；顶面的开关机 / 回充键再用 scripts/ref-cover.mjs 抹平（refs/robot-body.jpg），按键在说明书里是几何体。生成后本地 optimize 到约 4 万面。早先的文字生成 + 分块试验（station）记录在 tripo.log.json。",
+  "jobs": [
+    {
+      "name": "base",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/roborock-p10/refs/dock-front.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "robot",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/roborock-p10/refs/robot-body.jpg",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

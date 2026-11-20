@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- 外观模型六向视图：npm run dev 后打开 /scripts/model-views.html?src=/models/<id>/<name>.glb，用来换算 model.rot
+     分割结果加 &parts=1（每个节点一种颜色）和 &explode=0.6（按节点中心向外炸开）；&focus=x0,y0,z0,x1,y1,z1 只看一块 -->
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>模型六向视图</title>
+  <style>
+    body { margin: 0; background: #f4f2ee; font: 13px -apple-system, "PingFang SC", sans-serif; color: #222; }
+    h1 { font-size: 15px; margin: 14px 16px 4px; }
+    p { margin: 0 16px 10px; color: #666; }
+    .grid { display: grid; grid-template-columns: repeat(3, 360px); gap: 10px; padding: 0 16px 16px; }
+    figure { margin: 0; background: #fff; border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+    canvas { display: block; width: 360px; height: 300px; }
+    figcaption { padding: 6px 10px; }
+    figcaption b { color: #e5482d; margin-right: 8px; }
+  </style>
+</head>
+<body>
+  <h1 id="title"></h1>
+  <p id="info"></p>
+  <div class="grid" id="grid"></div>
+  <script type="module">
+    import { AmbientLight, Box3, Color, DirectionalLight, MeshStandardMaterial, OrthographicCamera, PMREMGenerator, Plane, Scene, Vector3, WebGLRenderer } from 'three'
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+    import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+
+    const q = new URLSearchParams(location.search)
+    const src = q.get('src')
+    const parts = q.has('parts')
+    const explode = Number(q.get('explode') ?? 0)
+    document.getElementById('title').textContent = src ?? '加 ?src=/models/<id>/<name>.glb'
+    const VIEWS = [
+      { name: '从 +Z 看（正面）', dir: [0, 0, 1], up: [0, 1, 0], axes: '右 +X · 上 +Y' },
+      { name: '从 -Z 看（背面）', dir: [0, 0, -1], up: [0, 1, 0], axes: '右 -X · 上 +Y' },
+      { name: '从 +X 看', dir: [1, 0, 0], up: [0, 1, 0], axes: '右 -Z · 上 +Y' },
+      { name: '从 -X 看', dir: [-1, 0, 0], up: [0, 1, 0], axes: '右 +Z · 上 +Y' },
+      { name: '从 +Y 看（俯视）', dir: [0, 1, 0], up: [0, 0, -1], axes: '右 +X · 上 -Z' },
+      { name: '从 -Y 看（仰视）', dir: [0, -1, 0], up: [0, 0, 1], axes: '右 +X · 上 +Z' },
+      { name: '等轴测（+X +Y +Z）', dir: [1, 0.8, 1], up: [0, 1, 0], axes: '斜看' },
+      { name: '等轴测（-X +Y -Z）', dir: [-1, 0.8, -1], up: [0, 1, 0], axes: '斜看' },
+    ]
+    if (src) {
+      const gltf = await new GLTFLoader().loadAsync(src)
+      const whole = new Box3().setFromObject(gltf.scene)
+      const meshes = []
+      gltf.scene.traverse((o) => o.isMesh && meshes.push(o))
+      if (parts || explode) {
+        const c0 = whole.getCenter(new Vector3())
+        meshes.forEach((m, i) => {
+          if (parts) m.material = new MeshStandardMaterial({ color: new Color().setHSL((i * 0.618) % 1, 0.65, 0.55), roughness: 0.6 })
+          const offset = new Box3().setFromObject(m).getCenter(new Vector3()).sub(c0).multiplyScalar(explode)
+          m.position.copy(m.parent.worldToLocal(m.getWorldPosition(new Vector3()).add(offset)))
+        })
+      }
+      const box = new Box3().setFromObject(gltf.scene)
+      const size = box.getSize(new Vector3())
+      document.getElementById('info').textContent =
+        `尺寸 x×y×z = ${[size.x, size.y, size.z].map((v) => Math.round(v * 1000)).join(' × ')}（按米换算 mm）· ${meshes.length} 个网格`
+      // focus=x0,y0,z0,x1,y1,z1：只看包围盒里按比例取的一块，盒外的几何用裁切面去掉，免得挡住
+      const f = q.get('focus')?.split(',').map(Number)
+      const clip = []
+      if (f?.length === 6) {
+        const lo = new Vector3(f[0], f[1], f[2]).multiply(size).add(box.min)
+        const hi = new Vector3(f[3], f[4], f[5]).multiply(size).add(box.min)
+        box.set(lo, hi)
+        for (const [n, d] of [[[1, 0, 0], -lo.x], [[-1, 0, 0], hi.x], [[0, 1, 0], -lo.y], [[0, -1, 0], hi.y], [[0, 0, 1], -lo.z], [[0, 0, -1], hi.z]]) clip.push(new Plane(new Vector3(...n), d))
+        document.getElementById('info').textContent += ` · 局部 ${f.join(', ')}`
+      }
+      const center = box.getCenter(new Vector3())
+      const r = box.getSize(new Vector3()).length() / 2
+      for (const v of VIEWS) {
+        const fig = document.createElement('figure')
+        const canvas = document.createElement('canvas')
+        fig.append(canvas)
+        fig.insertAdjacentHTML('beforeend', `<figcaption><b>${v.name}</b>${v.axes}</figcaption>`)
+        document.getElementById('grid').append(fig)
+        const gl = new WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true })
+        gl.setPixelRatio(2)
+        gl.setSize(360, 300, false)
+        gl.clippingPlanes = clip
+        const scene = new Scene()
+        scene.background = new Color('#ffffff')
+        scene.environment = new PMREMGenerator(gl).fromScene(new RoomEnvironment(), 0.04).texture
+        scene.add(new AmbientLight(0xffffff, 0.4), new DirectionalLight(0xffffff, 1.2))
+        scene.add(gltf.scene.clone())
+        const aspect = 360 / 300
+        const cam = new OrthographicCamera(-r * aspect, r * aspect, r, -r, 0.001, r * 10)
+        cam.position.copy(center).addScaledVector(new Vector3(...v.dir).normalize(), r * 4)
+        cam.up.set(...v.up)
+        cam.lookAt(center)
+        gl.render(scene, cam)
+      }
+    }
+    window.__ready = true
+  </script>
+</body>
+</html>

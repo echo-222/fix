@@ -1,7 +1,9 @@
 import { useRef } from 'react'
+import type { FeedPost } from '../community/seed'
 import { useCurrentStep } from '../three/Scene'
 import { useApp } from '../store'
-import { IconLeft, IconPause, IconPlay, IconRight, IconTag, IconZoom } from './icons'
+import { NoteActions } from './community/NotePanel'
+import { IconLeft, IconRight } from './icons'
 
 function Timeline() {
   const { guide, index, design } = useCurrentStep()
@@ -43,31 +45,24 @@ function Timeline() {
   )
 }
 
-export function Controls() {
-  const playing = useApp((s) => s.playing)
-  const showDetail = useApp((s) => s.showDetail)
-  const showLabels = useApp((s) => s.showLabels)
-  const setPlaying = useApp((s) => s.setPlaying)
-  const toggle = useApp((s) => s.toggle)
+export function Controls({ post }: { post: FeedPost }) {
   const next = useApp((s) => s.next)
   const prev = useApp((s) => s.prev)
+  const guides = useApp((s) => s.guides)
   const { index, guide, design } = useCurrentStep()
+  const at = guides.indexOf(guide)
+  const before = index === 0 ? guides[at - 1] : undefined
+  const after = index === guide.steps.length - 1 ? guides[at + 1] : undefined
+  const prevLabel = before ? `上一个：${before.title}` : '上一步'
+  const nextLabel = after ? `下一个：${after.title}` : '下一步'
   return (
     <footer className="controls">
-      <button className="round" onClick={() => setPlaying(!playing)} aria-label={playing ? '暂停' : '自动播放'}>
-        {playing ? <IconPause /> : <IconPlay />}
-      </button>
-      <button className={`round ${showDetail ? 'is-on' : ''}`} onClick={() => toggle('showDetail')} aria-label="细节放大" title="细节放大">
-        <IconZoom />
-      </button>
-      <button className={`round ${showLabels ? 'is-on' : ''}`} onClick={() => toggle('showLabels')} aria-label="零件标签" title="零件标签">
-        <IconTag />
-      </button>
+      <NoteActions post={post} />
       <Timeline />
-      <button className="round" onClick={prev} disabled={!design && index === 0} aria-label="上一步">
+      <button className="round" onClick={prev} disabled={!design && index === 0 && !before} aria-label={prevLabel} title={prevLabel}>
         <IconLeft />
       </button>
-      <button className="round" onClick={next} disabled={!design && index === guide.steps.length - 1} aria-label="下一步">
+      <button className="round" onClick={next} disabled={!design && index === guide.steps.length - 1 && !after} aria-label={nextLabel} title={nextLabel}>
         <IconRight />
       </button>
     </footer>

@@ -20,7 +20,7 @@ export const PRODUCTS: { id: ProductId; family: string; name: string; desc: stri
   { id: 'shelf', family: '光轴', name: '光轴落地置物架', desc: 'Ø12 光轴穿板 · 限位环承托 · 4 层' },
   { id: 'table', family: '光轴', name: '光轴边几', desc: 'SHF 法兰支座 · 倒置组装 · 双层' },
   { id: 'rack', family: '光轴', name: '光轴挂衣架', desc: 'Ø16 光轴 · T 型夹 + 十字夹 · 鞋架' },
-  ...MANUALS.map((m) => ({ id: `manual:${m.id}` as const, family: '说明书', name: m.name, desc: m.desc })),
+  ...MANUALS.map((m) => ({ id: `manual:${m.id}` as const, family: m.category, name: m.name, desc: m.desc })),
 ]
 
 export const isManualModel = (m: AnyModel): m is ManualModel => 'scene' in m

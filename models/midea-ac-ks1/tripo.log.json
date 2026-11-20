@@ -1,0 +1,70 @@
+{
+  "indoor": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "06da59c1-ff24-43dd-b6ef-981daf256566",
+        "credits": 40,
+        "seconds": 132,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_b4fb304b-ebff-41ca-b281-dc53f4c89795"
+        },
+        "file": "models/midea-ac-ks1/raw/indoor-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 42,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/midea-ac-ks1/raw/indoor-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T04:09:25.263Z",
+    "file": "public/models/midea-ac-ks1/indoor.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T04:12:22.931Z"
+  },
+  "remote": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "666613b0-14f7-4c21-bed3-e2bc6d9f67ab",
+        "credits": 40,
+        "seconds": 121,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_9871d0e0-9c78-4bec-be11-230bd64f8963"
+        },
+        "file": "models/midea-ac-ks1/raw/remote-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 44,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/midea-ac-ks1/raw/remote-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T14:44:28.243Z",
+    "file": "public/models/midea-ac-ks1/remote.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T14:47:13.217Z"
+  }
+}

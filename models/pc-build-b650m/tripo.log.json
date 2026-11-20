@@ -1,0 +1,485 @@
+{
+  "ram-text": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "63246c0c-59f7-48be-bef4-69ebe580f414",
+        "credits": 20,
+        "seconds": 99,
+        "body": {
+          "prompt": "A single desktop computer RAM memory module oriented horizontally: a long, low, very thin rectangular board whose long side is horizontal, about four times wider than it is tall. A smooth matte black heat spreader covers both faces. A row of many small gold contact pins runs along the entire long bottom edge, with one small notch slightly off-center. Plain clean surfaces, realistic product, no logos, no text, no labels.",
+          "negative_prompt": "logo, text, label, numbers, letters, RGB lights, multiple sticks, thick block, vertical, standing upright, pins on the short edge",
+          "texture": true,
+          "pbr": true,
+          "face_limit": 6000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/ram-1-text-to-model.glb"
+      }
+    ],
+    "started": "2026-10-29T05:46:25.715Z",
+    "file": "public/models/pc-build-b650m/ram.glb",
+    "credits": 20,
+    "done": true,
+    "finished": "2026-10-29T05:48:04.711Z",
+    "experiment": "文字生成的通用外观，已换成官方产品图生成；模型备份在 raw/text/ram.glb"
+  },
+  "gpu-text": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "4cb0dabc-77a6-44b9-b960-694fe8e721de",
+        "credits": 20,
+        "seconds": 140,
+        "body": {
+          "prompt": "A generic dual-fan desktop graphics card, about 205 mm long, 110 mm tall and 40 mm thick (2-slot). Black plastic shroud with two round axial fans on one face, metal PCIe bracket at one short end, gold PCIe x16 edge connector along the bottom edge, one 8-pin power socket on the top edge. Realistic product, no logos, no text.",
+          "negative_prompt": "logo, text, RGB lights, cables, motherboard",
+          "texture": true,
+          "pbr": true,
+          "face_limit": 10000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/gpu-1-text-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "70a5fe2e-f15d-4dd5-b2f8-ad3f2cec58ac",
+        "credits": 30,
+        "seconds": 69,
+        "body": {
+          "input": "4cb0dabc-77a6-44b9-b960-694fe8e721de",
+          "face_limit": 3000
+        },
+        "file": "models/pc-build-b650m/raw/gpu-lite-1-decimate.glb"
+      }
+    ],
+    "started": "2026-10-29T05:34:49.784Z",
+    "file": "public/models/pc-build-b650m/gpu.glb",
+    "credits": 50,
+    "done": true,
+    "finished": "2026-10-29T05:57:00.722Z",
+    "experiment": "文字生成的通用外观，已换成官方产品图生成；模型备份在 raw/text/gpu.glb"
+  },
+  "psu-text": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "149b6367-1d1c-4410-9592-dd89b9683e23",
+        "credits": 20,
+        "seconds": 241,
+        "body": {
+          "prompt": "A standard ATX computer power supply lying flat: a wide, shallow, rectangular matte black steel box whose height is only a little more than half of its width; width and depth are almost equal. A large round fan grille fills most of the top face. The back panel has a fine honeycomb vent, a three-pin power inlet and a small rocker switch. Clean sharp edges, realistic product, plain surfaces, no logos, no text.",
+          "negative_prompt": "logo, text, label, numbers, cables, RGB lights, tall box, cube, tower, standing upright",
+          "texture": true,
+          "pbr": true,
+          "face_limit": 10000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/psu-1-text-to-model.glb"
+      }
+    ],
+    "started": "2026-10-29T05:45:36.210Z",
+    "file": "public/models/pc-build-b650m/psu.glb",
+    "credits": 20,
+    "done": true,
+    "finished": "2026-10-29T05:45:47.240Z",
+    "experiment": "文字生成的通用外观，已换成官方产品图生成；模型备份在 raw/text/psu.glb"
+  },
+  "cooler-text": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "808b45f4-623a-48fe-b2eb-11fb7ae29a6d",
+        "credits": 20,
+        "seconds": 205,
+        "body": {
+          "prompt": "A generic low-profile top-flow CPU air cooler, about 88 x 88 mm and 57 mm tall: a square 90 mm fan mounted on top of an aluminum fin heatsink block, with a flat copper contact base underneath. Realistic product, no logos, no text.",
+          "negative_prompt": "logo, text, tower cooler, RGB lights, cables",
+          "texture": true,
+          "pbr": true,
+          "face_limit": 10000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/cooler-1-text-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "576fcc2a-b5ad-457b-8185-9d20eae339c5",
+        "credits": 30,
+        "seconds": 79,
+        "body": {
+          "input": "808b45f4-623a-48fe-b2eb-11fb7ae29a6d",
+          "face_limit": 3000
+        },
+        "file": "models/pc-build-b650m/raw/cooler-lite-1-decimate.glb"
+      }
+    ],
+    "started": "2026-10-29T05:34:49.791Z",
+    "file": "public/models/pc-build-b650m/cooler.glb",
+    "credits": 50,
+    "done": true,
+    "finished": "2026-10-29T05:57:10.949Z",
+    "experiment": "文字生成的通用外观，已换成官方产品图生成；模型备份在 raw/text/cooler.glb"
+  },
+  "psu-lp": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "dd6e8a02-d97a-45d1-9eca-d7a1557bae64",
+        "credits": 30,
+        "seconds": 199,
+        "body": {
+          "prompt": "A standard ATX computer power supply lying flat: a wide, shallow, rectangular matte black steel box whose height is only a little more than half of its width; width and depth are almost equal. A large round fan grille fills most of the top face. The back panel has a fine honeycomb vent, a three-pin power inlet and a small rocker switch. Clean sharp edges, realistic product, plain surfaces, no logos, no text.",
+          "negative_prompt": "logo, text, label, numbers, cables, RGB lights, tall box, cube, tower, standing upright",
+          "texture": true,
+          "pbr": true,
+          "smart_low_poly": true,
+          "face_limit": 3000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/psu-lp-1-text-to-model.glb"
+      }
+    ],
+    "started": "2026-10-29T05:50:45.440Z",
+    "file": "models/pc-build-b650m/raw/psu-lp-1-text-to-model.glb",
+    "credits": 30,
+    "done": true,
+    "finished": "2026-10-29T05:54:04.814Z",
+    "experiment": "smart_low_poly 直出：重新随机生成，造型比高模差，弃用"
+  },
+  "gpu-lp": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "7070881b-edc3-4c01-8f28-9c7e999c6f39",
+        "credits": 30,
+        "seconds": 215,
+        "body": {
+          "prompt": "A generic dual-fan desktop graphics card, about 205 mm long, 110 mm tall and 40 mm thick (2-slot). Black plastic shroud with two round axial fans on one face, metal PCIe bracket at one short end, gold PCIe x16 edge connector along the bottom edge, one 8-pin power socket on the top edge. Realistic product, no logos, no text.",
+          "negative_prompt": "logo, text, RGB lights, cables, motherboard",
+          "texture": true,
+          "pbr": true,
+          "smart_low_poly": true,
+          "face_limit": 3000,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/gpu-lp-1-text-to-model.glb"
+      }
+    ],
+    "started": "2026-10-29T05:50:45.437Z",
+    "file": "models/pc-build-b650m/raw/gpu-lp-1-text-to-model.glb",
+    "credits": 30,
+    "done": true,
+    "finished": "2026-10-29T05:54:20.031Z",
+    "experiment": "smart_low_poly 直出：重新随机生成，造型比高模差，弃用"
+  },
+  "psu-v1": {
+    "experiment": "比例太高（高:宽 0.82），风扇格栅和开关挤在同一面",
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "90964bd6-a33a-49c9-9b49-dfc556fa767b",
+        "credits": 20,
+        "file": "models/pc-build-b650m/raw/psu-v1.glb"
+      }
+    ],
+    "credits": 20,
+    "done": true
+  },
+  "ram-v1": {
+    "experiment": "太厚太矮，贴图印出「DDR5 133 mm」",
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "b0e075c3-2e33-4ad8-a1dc-455a8f5600d8",
+        "credits": 20,
+        "file": "models/pc-build-b650m/raw/ram-v1.glb"
+      }
+    ],
+    "credits": 20,
+    "done": true
+  },
+  "ram-v2": {
+    "experiment": "竖着生成，金手指在短边",
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "a8ce77ab-c96d-45f2-a8be-73cd2ca8c037",
+        "credits": 20,
+        "file": "models/pc-build-b650m/raw/ram-v2.glb"
+      }
+    ],
+    "credits": 20,
+    "done": true
+  },
+  "ram": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "d1db7402-4fd4-4dc0-ba02-894fdb3e81d0",
+        "credits": 40,
+        "seconds": 101,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_aaa170d9-8a01-4c61-85a2-3fb53ef99412"
+        },
+        "file": "models/pc-build-b650m/raw/ram-1-image-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "7eeb95ac-09a0-4687-94dd-214f6c11f84f",
+        "credits": 30,
+        "seconds": 192,
+        "body": {
+          "face_limit": 8000,
+          "input": "d1db7402-4fd4-4dc0-ba02-894fdb3e81d0"
+        },
+        "file": "models/pc-build-b650m/raw/ram-2-decimate.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/pc-build-b650m/raw/ram-3-optimize.glb",
+        "source": "第 1 步的原始模型（第 2 步 Tripo decimate 的结果弃用）"
+      }
+    ],
+    "started": "2026-10-29T13:40:22.931Z",
+    "file": "public/models/pc-build-b650m/ram.glb",
+    "credits": 70,
+    "done": true,
+    "finished": "2026-10-29T13:45:19.075Z"
+  },
+  "cooler": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "8b582412-d872-471a-b14d-1664ce349d74",
+        "credits": 40,
+        "seconds": 253,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_f98d0a10-403e-4ffe-8b82-e3de8ea0bda1"
+        },
+        "file": "models/pc-build-b650m/raw/cooler-1-image-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "03da239d-698e-4d02-a2e9-0480d4d2915f",
+        "credits": 30,
+        "seconds": 346,
+        "body": {
+          "face_limit": 8000,
+          "input": "8b582412-d872-471a-b14d-1664ce349d74"
+        },
+        "file": "models/pc-build-b650m/raw/cooler-2-decimate.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/pc-build-b650m/raw/cooler-3-optimize.glb",
+        "source": "第 1 步的原始模型（第 2 步 Tripo decimate 的结果弃用）"
+      }
+    ],
+    "started": "2026-10-29T13:40:22.930Z",
+    "file": "public/models/pc-build-b650m/cooler.glb",
+    "credits": 70,
+    "done": true,
+    "finished": "2026-10-29T13:50:38.820Z"
+  },
+  "gpu-mv3": {
+    "steps": [
+      {
+        "type": "multiview-to-model",
+        "task_id": "9b6db9ca-715c-4126-ab0f-34d48bb824f8",
+        "credits": 40,
+        "seconds": 168,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "inputs": [
+            {
+              "front": "file_77b50707-f640-4e59-837b-12d84f93f405"
+            },
+            {
+              "back": "file_2d3998e1-af92-454e-9070-99f0996f3295"
+            },
+            {
+              "right": "file_decf4f61-2658-4016-95eb-e8f45c73a710"
+            }
+          ]
+        },
+        "file": "models/pc-build-b650m/raw/gpu-1-multiview-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "bceb151c-cb2b-4a01-b57d-3edf0989f12a",
+        "credits": 30,
+        "seconds": 210,
+        "body": {
+          "face_limit": 8000,
+          "input": "9b6db9ca-715c-4126-ab0f-34d48bb824f8"
+        },
+        "file": "models/pc-build-b650m/raw/gpu-2-decimate.glb"
+      }
+    ],
+    "started": "2026-10-29T13:40:22.920Z",
+    "file": "public/models/pc-build-b650m/gpu.glb",
+    "credits": 70,
+    "done": true,
+    "finished": "2026-10-29T13:46:59.861Z",
+    "experiment": "多视角（正面 / 背板 / 挡板端）：挡板端那张图放大到和正面一样宽，Tripo 按同一比例理解，显卡被挤成厚方块。多视角的几张图必须同一比例"
+  },
+  "psu-cable": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "a7f71995-9d42-4aea-8f55-26840e3de92f",
+        "credits": 40,
+        "seconds": 162,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_ba183f73-cc59-4d0b-9f47-ee2a8556c78b"
+        },
+        "file": "models/pc-build-b650m/raw/psu-1-image-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "5e096daa-a9da-4e3d-a528-9d355667342f",
+        "credits": 30,
+        "seconds": 204,
+        "body": {
+          "face_limit": 8000,
+          "input": "a7f71995-9d42-4aea-8f55-26840e3de92f"
+        },
+        "file": "models/pc-build-b650m/raw/psu-2-decimate.glb"
+      }
+    ],
+    "started": "2026-10-29T13:40:22.929Z",
+    "file": "public/models/pc-build-b650m/psu.glb",
+    "credits": 70,
+    "done": true,
+    "finished": "2026-10-29T13:46:34.271Z",
+    "experiment": "参考图右边缘带一截线缆，模型在 -X 端多出一圈线（占总长约 1/3），拉伸进代理会把箱体压扁；涂掉线缆后重做"
+  },
+  "gpu": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "ee4445bc-026d-4345-9011-0b66db6d596b",
+        "credits": 40,
+        "seconds": 242,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/gpu-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 8,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/pc-build-b650m/raw/gpu-2-optimize.glb"
+      }
+    ],
+    "started": "2026-10-29T13:55:55.638Z",
+    "file": "public/models/pc-build-b650m/gpu.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-10-29T13:56:17.302Z"
+  },
+  "psu": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "c9bdf396-c3c0-4953-bc9a-dd82ba75c03a",
+        "credits": 40,
+        "seconds": 353,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/psu-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 21,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/pc-build-b650m/raw/psu-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:25:24.428Z",
+    "file": "public/models/pc-build-b650m/psu.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:25:54.505Z"
+  },
+  "psu-with-buttons": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "990521a5-2a03-4b79-812b-a443b5191460",
+        "credits": 40,
+        "seconds": 253,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/pc-build-b650m/raw/psu-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 8,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/pc-build-b650m/raw/psu-2-optimize.glb"
+      }
+    ],
+    "started": "2026-10-29T13:55:55.658Z",
+    "file": "public/models/pc-build-b650m/psu.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-10-29T13:56:28.930Z",
+    "note": "参考图里还带着按键，和几何体按键画成两层；换成抹平按键的参考图重新生成"
+  }
+}

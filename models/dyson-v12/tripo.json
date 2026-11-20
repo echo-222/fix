@@ -1,0 +1,26 @@
+{
+  "note": "Dyson V12 Detect Slim：主机身（含握把）、光学软绒吸头、吸尘杆各用官方单品图做图生模型。集尘筒、滤网、电池、充电座官方图不可用（缺失 / 拆散），用几何 + finish。",
+  "jobs": [
+    {
+      "name": "body",
+      "steps": [
+        { "type": "image-to-model", "image": "models/dyson-v12/refs/body-side.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "head",
+      "steps": [
+        { "type": "image-to-model", "image": "models/dyson-v12/refs/head-front.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "wand",
+      "steps": [
+        { "type": "image-to-model", "image": "models/dyson-v12/refs/wand.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

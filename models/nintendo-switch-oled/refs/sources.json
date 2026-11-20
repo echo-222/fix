@@ -1,0 +1,46 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归任天堂（Nintendo）/ 腾讯所有，只在本地用作生成输入，不进 git、不放 public/。全部为白色 Nintendo Switch（OLED 版）套装 HEG-001 的官方产品图。",
+  "fetched": "2026-11-02",
+  "products": {
+    "console": {
+      "product": "Nintendo Switch（OLED 版）主机 HEG-001（白色套装）",
+      "page": "https://www.nintendo.com/us/store/products/nintendo-switch-oled-model-white-set/",
+      "files": {
+        "cand/oled-console_joy-con-detached.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/hardware/nintendo-switch-oled-model-white-set/115461-switch-oled-white-console_joy-con-detached-1200x675",
+        "cand/oled-console-front.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/hardware/nintendo-switch-oled-model-white-set/115461-switch-oled-white-console-front-1200x675",
+        "cand/oled-joy-con-straps.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/hardware/nintendo-switch-oled-model-white-set/115461-switch-oled-white-joy-con-straps-1200x675",
+        "cand/oled-console-dock-joy-con-grip.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/hardware/nintendo-switch-oled-model-white-set/115461-switch-oled-white-console-dock-joy-con-grip-1200x675",
+        "cand/stand.png": "https://assets.nintendo.com/image/upload/f_png/dpr_2.0/ncom/en_US/hardware/switch/switch-hw-pmp/oled/02-stand"
+      },
+      "derived": {
+        "console-3q.png": "oled-console_joy-con-detached：透明底铺白；主机左侧边缘线 x = 100 + (y − 300) × 0.62 以左、y ≥ 320 的支架涂白；主机下沿 y = 515 − (x − 220) × 0.225 以下（右侧两只 Joy-Con）涂白；裁 (0,40)–(790,535)，补成正方形"
+      }
+    },
+    "joycon": {
+      "product": "Joy-Con（L）/（R）白色（OLED 版套装附带）",
+      "page": "https://www.nintendoswitch.com.cn/hardware/switch/oled",
+      "files": {
+        "../../../manuals-src/nintendo-switch-oled/spec/8425794.jpg": "https://switch-cn.gtgres.com/home/_dynamic/img/8425794.jpg"
+      },
+      "derived": {
+        "cand/joycon-pair-clean.png": "8425794（Joy-Con 正面规格图）：红色引线、编号圈、圆点（r>120 且比 g、b 高 50 以上，外扩 1 px）按 8 邻域非红像素逐圈补色；被 ② 号圆点盖住的 − 键在 (302,188)–(322,195) 重画成深色圆角短条",
+        "joycon-l-front.png": "joycon-pair-clean 裁 (195,140)–(352,538)，放大 3 倍（Lanczos）+ 锐化，补成正方形",
+        "joycon-r-front.png": "joycon-pair-clean 裁 (398,140)–(555,538)，放大 3 倍（Lanczos）+ 锐化，补成正方形",
+        "joycon-r-body.jpg": "joycon-r-front.png 转 JPEG 后用 scripts/ref-cover.mjs 按机身颜色抹平 ABXY 和 Home 键：依次 546,340,642,492（Y）612,282,830,578（X/A/B）再各补一遍，最后 562,876,698,1010（Home）；相邻的键分开盖、补两遍，边缘才不会采到别的键（按键在说明书里是几何体）"
+      }
+    },
+    "dock": {
+      "product": "Nintendo Switch 基座（带有线 LAN 端口）HEG-007 白色",
+      "page": "https://www.nintendo.com/us/store/products/dock-oled-model-white-116471/",
+      "files": {
+        "cand/dock-front-angle.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/accessories/nintendo-switch/docks-cables-and-chargers/dock-oled-model-white/116471-switch-oled-white-dock-front-angle-1200x675",
+        "cand/dock-front.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/accessories/nintendo-switch/docks-cables-and-chargers/dock-oled-model-white/116471-switch-oled-white-dock-front-1200x675",
+        "cand/dock-back.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/accessories/nintendo-switch/docks-cables-and-chargers/dock-oled-model-white/116471-switch-oled-white-dock-back-1200x675",
+        "cand/dock-back-open.png": "https://assets.nintendo.com/image/upload/q_auto/f_png/dpr_2.0/ncom/en_US/products/accessories/nintendo-switch/docks-cables-and-chargers/dock-oled-model-white/116471-switch-oled-white-dock-back-open-1200x675"
+      },
+      "derived": {
+        "dock-3q.png": "dock-front-angle：透明底铺白，裁 (150,0)–(1050,675)，补成正方形；其余三张只用来核对背盖、接口位置"
+      }
+    }
+  }
+}

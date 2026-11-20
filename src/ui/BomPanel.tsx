@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { withBase } from '../base'
 import type { DeskModel } from '../domain/desk'
 import type { ManualModel } from '../domain/manual/compile'
 import { isManualModel, type AnyModel } from '../domain/products'
@@ -11,16 +12,17 @@ function ManualPanel({ model }: { model: ManualModel }) {
   const setPanel = useApp((s) => s.setPanel)
   const [tab, setTab] = useState<'pkg' | 'params' | 'pages'>('pkg')
   const spec = model.spec
+  const tutorial = spec.genre === 'tutorial'
   return (
     <aside className="panel">
       <div className="panel-head">
-        <h3>包装与参数</h3>
+        <h3>{tutorial ? '材料与要点' : '包装与参数'}</h3>
         <button className="round small" onClick={() => setPanel('none')} aria-label="关闭"><IconClose /></button>
       </div>
       <div className="tabs">
-        <button className={tab === 'pkg' ? 'is-on' : ''} onClick={() => setTab('pkg')}>包装清单</button>
-        <button className={tab === 'params' ? 'is-on' : ''} onClick={() => setTab('params')}>基本参数</button>
-        <button className={tab === 'pages' ? 'is-on' : ''} onClick={() => setTab('pages')}>原说明书</button>
+        <button className={tab === 'pkg' ? 'is-on' : ''} onClick={() => setTab('pkg')}>{tutorial ? '材料' : '包装清单'}</button>
+        <button className={tab === 'params' ? 'is-on' : ''} onClick={() => setTab('params')}>{tutorial ? '要点' : '基本参数'}</button>
+        <button className={tab === 'pages' ? 'is-on' : ''} onClick={() => setTab('pages')}>{tutorial ? '参考资料' : '原说明书'}</button>
       </div>
       <div className="panel-body">
         {tab === 'pkg' && (
@@ -53,11 +55,24 @@ function ManualPanel({ model }: { model: ManualModel }) {
           <div className="manual-pages">
             {spec.source.images.map((img) => (
               <figure key={img.src}>
-                <a href={img.src} target="_blank" rel="noreferrer"><img src={img.src} alt={img.pages} /></a>
+                <a href={withBase(img.src)} target="_blank" rel="noreferrer"><img src={withBase(img.src)} alt={img.pages} /></a>
                 <figcaption>{img.pages}</figcaption>
               </figure>
             ))}
-            <p className="field-note">每一步的「说明书 第 N 页」标签对应这里的原文页码。</p>
+            {spec.source.url && (
+              <p className="field-note">
+                <b>{spec.source.title}</b><br />
+                <a href={spec.source.url} target="_blank" rel="noreferrer">{tutorial ? '查看参考资料' : '查看官方原文'}</a>
+              </p>
+            )}
+            {tutorial ? (
+              <p className="field-note">步骤和数字按参考资料整理，3D 动画是重新绘制的，不是原图。</p>
+            ) : (
+              <p className="field-note">
+                每一步的「说明书 第 N 页」标签对应{spec.source.images.length ? '这里' : '官方原文'}的页码。
+                {!spec.source.images.length && '原文版权归品牌所有，这里只做页码溯源。'}
+              </p>
+            )}
           </div>
         )}
         {model.issues.length > 0 && (

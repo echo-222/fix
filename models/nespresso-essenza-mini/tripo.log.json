@@ -1,0 +1,191 @@
+{
+  "body": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "6c0574a8-4491-4019-8635-2d9463dc54c6",
+        "credits": 40,
+        "seconds": 371,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 20,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:36:27.741Z",
+    "file": "public/models/nespresso-essenza-mini/body.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:37:08.319Z"
+  },
+  "bin": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "827a81d7-0830-4fcf-af02-88881743737b",
+        "credits": 40,
+        "seconds": 2565,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_00e166ce-ccf3-4224-9b70-4693aab4e2de"
+        },
+        "file": "models/nespresso-essenza-mini/raw/bin-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 27,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nespresso-essenza-mini/raw/bin-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:25:45.021Z",
+    "file": "public/models/nespresso-essenza-mini/bin.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:09:03.343Z"
+  },
+  "tank": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "f4a121d6-0211-422d-b333-46518ebeb429",
+        "credits": 40,
+        "seconds": 3519,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_a7379b9d-29fe-499f-89ef-654e577c2aae"
+        },
+        "file": "models/nespresso-essenza-mini/raw/tank-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 27,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nespresso-essenza-mini/raw/tank-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:25:45.020Z",
+    "file": "public/models/nespresso-essenza-mini/tank.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:24:55.628Z"
+  },
+  "tray": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "773098d4-5330-4ffb-9b12-2de1301369dc",
+        "credits": 40,
+        "seconds": 4001,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_275877fd-d9c1-4584-85e8-6f8d4c08a0d5"
+        },
+        "file": "models/nespresso-essenza-mini/raw/tray-1-image-to-model.glb"
+      }
+    ],
+    "started": "2026-11-02T05:25:45.021Z"
+  },
+  "body-with-buttons": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "d942c2d2-38a0-420d-843b-af73d035d984",
+        "credits": 40,
+        "seconds": 979,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_d9bb55fa-65b2-4274-a12b-0f6350f6e3aa"
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 42,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T06:32:37.768Z",
+    "file": "public/models/nespresso-essenza-mini/body.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:33:19.332Z",
+    "note": "参考图里还带着按键，和几何体按键画成两层；换成抹平按键的参考图重新生成"
+  },
+  "body-dark": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "1a093a53-4ce2-4f61-8bd1-1765e74e4f36",
+        "credits": 40,
+        "seconds": 357,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 21,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/nespresso-essenza-mini/raw/body-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:25:24.414Z",
+    "file": "public/models/nespresso-essenza-mini/body.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:25:59.374Z",
+    "note": "按键抹平后第一次重新生成：外形对，但贴图整体发灰、侧面一片白斑（白色机身画成深灰），弃用重跑"
+  }
+}

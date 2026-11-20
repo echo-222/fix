@@ -1,7 +1,8 @@
 import {
-  BoxGeometry, BufferGeometry, CircleGeometry, CylinderGeometry, ExtrudeGeometry, Float32BufferAttribute, PlaneGeometry, Shape as ThreeShape, ShapeGeometry,
+  BoxGeometry, BufferGeometry, CircleGeometry, CylinderGeometry, ExtrudeGeometry, Float32BufferAttribute, Path, PlaneGeometry, Shape as ThreeShape, ShapeGeometry, Vector2,
 } from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
+import { gearOutline } from '../../domain/manual/profile'
 import { shellHeightAt, shellParams, shellPoint, shellTopY, type ShellShape } from '../../domain/manual/shell'
 import type { Shape } from '../../domain/manual/types'
 import { cached, withExtraEdges, withSilhouette } from '../geometries'
@@ -100,6 +101,28 @@ function boxGeometry(size: [number, number, number], chamfer = 0) {
   return withSilhouette(new RoundedBoxGeometry(size[0], size[1], size[2], 2, chamfer))
 }
 
+/** 俯视多边形（[x, z]）向上挤出 h */
+function polyGeometry(points: [number, number][], h: number) {
+  const s = new ThreeShape(points.map(([x, z]) => new Vector2(x, -z)))
+  const g = new ExtrudeGeometry(s, { depth: h, bevelEnabled: false })
+  g.rotateX(-Math.PI / 2)
+  return g
+}
+
+function gearGeometry(teeth: number, r: number, h: number, axis: 'x' | 'y' | 'z' = 'y', bore = 0) {
+  const s = new ThreeShape(gearOutline(teeth, r).map(([x, y]) => new Vector2(x, y)))
+  if (bore > 0) {
+    const hole = new Path()
+    hole.absarc(0, 0, bore, 0, Math.PI * 2, true)
+    s.holes.push(hole)
+  }
+  const g = new ExtrudeGeometry(s, { depth: h, bevelEnabled: false, curveSegments: 16 })
+  g.translate(0, 0, -h / 2)
+  if (axis === 'y') g.rotateX(-Math.PI / 2)
+  if (axis === 'x') g.rotateY(Math.PI / 2)
+  return g
+}
+
 export function holeGeometry(w: number, h: number, r = Math.min(w, h) * 0.3) {
   return new ShapeGeometry(roundRect(w, h, r), 6)
 }
@@ -112,6 +135,8 @@ export function solidGeometry(shape: Shape): BufferGeometry | null {
     case 'slab': return cached(key, () => slabGeometry(shape.w, shape.d, shape.h, shape.r ?? 0))
     case 'cylinder': return cached(key, () => cylinderGeometry(shape.r, shape.h, shape.axis, shape.r2))
     case 'shell': return cached(key, () => shellGeometry(shape))
+    case 'poly': return cached(key, () => polyGeometry(shape.points, shape.h))
+    case 'gear': return cached(key, () => gearGeometry(shape.teeth, shape.r, shape.h, shape.axis, shape.bore))
     case 'hole': return cached(key, () => holeGeometry(shape.w, shape.h, shape.r))
     case 'led': return cached(key, () => new CircleGeometry(shape.r, 28))
     case 'screen': return cached(key, () => new PlaneGeometry(shape.w, shape.h))

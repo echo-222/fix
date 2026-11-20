@@ -1,0 +1,77 @@
+{
+  "note": "用真实产品的官方图生成（型号和图片来源见 refs/sources.json；图片不进 git）。每个零件用一张干净的 3/4 视角图（能同时看到三个面）走单图生成；电源参考图右边缘的线缆先涂白（psu-3q-clean.jpg），否则模型会多出一圈线；背面的开关再用 scripts/ref-cover.mjs 按机壳颜色抹平（psu-body.jpg），开关在说明书里是几何体。多视角试过：几张图比例不一致时会生成厚方块（见 log 的 gpu-mv3）。生成后在本地用 gltf-transform 简化到约 4 万面、贴图压成 1024 px WebP（约 1.5 MB / 个）；Tripo 的 decimate 会把散热器风扇罩这种薄壳整片吃掉，不再用。早先的文字生成版本和提示词试验记录在 tripo.log.json（*-text、*-v1 等）。",
+  "jobs": [
+    {
+      "name": "gpu",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/pc-build-b650m/refs/gpu-3q.jpg",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        {
+          "type": "optimize",
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        }
+      ]
+    },
+    {
+      "name": "psu",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/pc-build-b650m/refs/psu-body.jpg",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        {
+          "type": "optimize",
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        }
+      ]
+    },
+    {
+      "name": "cooler",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/pc-build-b650m/refs/cooler-3q.png",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        {
+          "type": "optimize",
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        }
+      ]
+    },
+    {
+      "name": "ram",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/pc-build-b650m/refs/ram-3q.jpg",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        {
+          "type": "optimize",
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归石头科技 / 零售商所有，只在本地用作生成输入，不进 git、不放 public/。P10 海外版名为 Roborock Q Revo，外观相同。",
+  "fetched": "2026-10-29",
+  "products": {
+    "robot": {
+      "product": "石头 P10 扫拖机器人 A7400RR（海外版 Q Revo，白色）",
+      "page": "https://de.roborock.com/products/roborock-q-revo",
+      "files": {
+        "cand/c1.jpg": "https://cdn.shopify.com/s/files/1/0250/9691/2968/files/Qrevoppdewhite.jpg?v=1737359913"
+      },
+      "derived": {
+        "robot-3q.png": "c1 裁出机器人（380,1220)–(1320,1800)；被基座挡住的上沿按机身轮廓椭圆补成亮面白色，其余涂白、补成正方形",
+        "robot-body.jpg": "robot-3q.png 转 JPEG 后用 scripts/ref-cover.mjs 按顶面颜色抹平开关机 / 回充键 232,524,392,572（按键在说明书里是几何体）"
+      }
+    },
+    "base": {
+      "product": "石头 P10 智能上下水套装版基座 EWFD09HRR + 套件 AWCM01RR",
+      "page": "https://product.suning.com/0000000000/000000012405277969.html",
+      "files": {
+        "suning/s24.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/cYW1-T8tIFj6RAYeXa17cg.jpg",
+        "suning/s25.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/d72Au7jMOqrm4RZFFTVnFQ.jpg"
+      },
+      "derived": {
+        "dock-front.png": "s24（套装版正面图）裁 (455,195)–(670,600)，放大 3 倍 + 锐化，用原图底色补成正方形；s25 是版本对比图，只用来核对套件外形"
+      }
+    }
+  }
+}

@@ -1,15 +1,18 @@
-import { Grid, Html, Line, OrbitControls } from '@react-three/drei'
+import { Html, Line, OrbitControls } from '@react-three/drei'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Group, Matrix4, Quaternion, Vector3 } from 'three'
 import type { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { isManualModel, type AnyModel } from '../domain/products'
 import type { Guide, Motion, Part, Step, ToolSpec, V3 } from '../domain/types'
-import { anim, currentGuide, useApp } from '../store'
+import { anim, currentGuide, useApp, type Panel } from '../store'
 import { focusScreen } from './focus'
 import { getGeometry, getHexKey } from './geometries'
 import { ACCENT, INK, LineMesh, type LineTone } from './LineArt'
+import type { ManualModel, SceneStep } from '../domain/manual/compile'
 import { ManualStage } from './manual/ManualStage'
+import { STAGE, STAGE_TONES, type StageTone } from './stage'
+import { StageFloor } from './StageFloor'
 
 type Status = 'installed' | 'active' | 'ghost' | 'hidden' | 'suggest' | 'explode'
 
@@ -196,9 +199,19 @@ function Tool({ tool, stepKey }: { tool: ToolSpec; stepKey: string }) {
   )
 }
 
-function FocusRing({ at }: { at: V3 }) {
+/**
+ * drei 的 Html 自带一个 React 根，在 react-dom 渲染中途卸载时 unmount 会被推迟，推迟的卸载会清掉重挂后的新内容（之后报 removeChild 错）。
+ * 所以一直挂着、按 show 显隐；并且晚一帧再挂，让挂载发生在 R3F 自己的更新里，而不是 Canvas 首次同步渲染里（开发模式 StrictMode 会挂两次）。
+ */
+function FocusRing({ at, show }: { at: V3; show: boolean }) {
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true))
+    return () => cancelAnimationFrame(id)
+  }, [])
+  if (!ready) return null
   return (
-    <Html position={at} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none' }}>
+    <Html position={at} center zIndexRange={[10, 0]} style={{ pointerEvents: 'none', display: show ? undefined : 'none' }}>
       <div className="focus-ring" />
     </Html>
   )
@@ -287,7 +300,7 @@ function CameraRig({ step, stepKey }: { step: Step; stepKey: string }) {
     const tt = new Vector3(...step.focus)
     const dir = new Vector3(...step.view.dir).normalize()
     const aspect = size.width / Math.max(1, size.height)
-    const dist = step.view.dist * (aspect < 1.25 ? Math.min(2.2, 1.25 / aspect) : 1)
+    const dist = step.view.dist * (sceneFlags.cover ? sceneFlags.coverZoom : aspect < 1.25 ? Math.min(2.2, 1.25 / aspect) : 1)
     fly.current = { fp: camera.position.clone(), ft: controls.target.clone(), tp: tt.clone().addScaledVector(dir, dist), tt, t0: performance.now() }
     const cancel = () => {
       fly.current = null
@@ -311,14 +324,50 @@ function CameraRig({ step, stepKey }: { step: Step; stepKey: string }) {
   return null
 }
 
-/** 侧边面板打开时把投影中心左移，避免模型被面板遮住 */
-function PanelOffset({ shifted }: { shifted: boolean }) {
-  const { camera, size } = useThree()
+/**
+ * 面板挡住画面时挪动投影：桌面上的侧边面板把画面中心左移；笔记抽屉从底部升起时，
+ * 把画面缩小并移到抽屉上方露出来的那一块。x / y 是画面中心的位移（px），s 是缩放。
+ */
+function ViewOffset({ panel }: { panel: Panel }) {
+  const { camera, size, gl } = useThree()
+  const target = useRef({ x: 0, y: 0, s: 1 })
+  const cur = useRef({ x: 0, y: 0, s: 1 })
+
   useEffect(() => {
+    const W = size.width
+    const H = size.height
+    let t = { x: 0, y: 0, s: 1 }
+    if ((panel === 'design' || panel === 'bom') && W > 760) t = { x: -190, y: 0, s: 1 }
+    else if (panel === 'note') {
+      const sheet = document.querySelector<HTMLElement>('.note-sheet')
+      const card = sheet?.offsetParent
+      if (sheet && card) {
+        const top = card.getBoundingClientRect().bottom - sheet.offsetHeight
+        const covered = Math.min(H * 0.85, Math.max(0, gl.domElement.getBoundingClientRect().bottom - top))
+        const visible = H - covered
+        t = { x: 0, y: -covered / 2, s: Math.max(0.35, Math.min(1, (visible / H) * 1.1)) }
+      }
+    }
+    target.current = t
+  }, [panel, size.width, size.height, gl])
+
+  useFrame((_, dt) => {
     const cam = camera as import('three').PerspectiveCamera
-    if (shifted && size.width > 760) cam.setViewOffset(size.width, size.height, 190, 0, size.width, size.height)
-    else cam.clearViewOffset()
-  }, [camera, shifted, size.width, size.height])
+    const c = cur.current
+    const t = target.current
+    const k = 1 - Math.exp(-Math.min(dt, 0.1) * 11)
+    c.x += (t.x - c.x) * k
+    c.y += (t.y - c.y) * k
+    c.s += (t.s - c.s) * k
+    if (Math.abs(c.x - t.x) < 0.3 && Math.abs(c.y - t.y) < 0.3 && Math.abs(c.s - t.s) < 0.001) Object.assign(c, t)
+    if (c.x === 0 && c.y === 0 && c.s === 1) {
+      if (cam.view?.enabled) cam.clearViewOffset()
+      return
+    }
+    const W = size.width
+    const H = size.height
+    cam.setViewOffset(W, H, W / 2 - (W / 2 + c.x) / c.s, H / 2 - (H / 2 + c.y) / c.s, W / c.s, H / c.s)
+  })
   return null
 }
 
@@ -334,7 +383,59 @@ function FocusProjector({ at, enabled }: { at: V3; enabled: boolean }) {
   return null
 }
 
-function SceneContent() {
+/** 场景道具：墙、地面、插座、电视、手机、工具这些不是产品本身的东西，广场上只摆产品 */
+const SCENERY = /^(墙|踢脚线|天花板|地面|电视|插座|墙面插座|电源插座|手机|智能手机|无线路由器|牙刷|热水布|软湿布|拧干的湿布|说明书|使用说明书)|插线板|道具|纸箱|台面|扳手|螺丝刀|铅笔|锤子|电钻|水平仪|五金包|地漏|上水立管|三通阀|三通球阀|角阀|下水管|厨下柜|水槽|自来水龙头|笔记本电脑|光猫/
+
+/** 广场模型图另外要藏的零件 id（#/sprite/…?hide=a,b，见 scripts/picks.mjs 的 PLAZA_HIDE） */
+export const spriteFlags = { hide: [] as string[] }
+
+/**
+ * 道具，以及挂在道具上的零件（插进插座的插头、电脑屏幕、墙上的束线管），连到它们的线。
+ * 挂在墙上、有外观模型的产品本身（比如空调室内机）留着。
+ */
+function sceneryOf(model: ManualModel, scene: SceneStep) {
+  const parts = model.scene.parts
+  const frame = scene.to
+  const byId = new Map(parts.map((p) => [p.id, p]))
+  const memo = new Map<string, boolean>()
+  const hidden = (id: string, depth = 0): boolean => {
+    const known = memo.get(id)
+    if (known !== undefined) return known
+    const p = byId.get(id)
+    const parent = frame[id]?.parent
+    const own = !!p && (SCENERY.test(p.name) || p.finish === 'wall' || spriteFlags.hide.includes(id))
+    const v = own || (!!p && !!parent && depth < 32 && !p.model && hidden(parent, depth + 1))
+    memo.set(id, v)
+    return v
+  }
+  const omit = new Set(parts.filter((p) => hidden(p.id)).map((p) => p.id))
+  for (const p of parts) {
+    const s = p.shape
+    if (s.type === 'cable' && (omit.has(s.from.part) || omit.has(s.to.part))) omit.add(p.id)
+  }
+  return omit
+}
+
+/** 广场模型图（#/sprite）：只画这一步的产品本身，没有镜头动画、网格、工具、标注、场景道具 */
+export function StillContent() {
+  const { step: raw, guide, design, index } = useCurrentStep()
+  const model = useApp((s) => s.model)
+  const step = useMemo(() => posed(raw, model.dims.height), [raw, model])
+  const manual = isManualModel(model) ? model : null
+  const omit = useMemo(() => (manual && step.scene ? sceneryOf(manual, step.scene) : undefined), [manual, step.scene])
+  return manual && step.scene
+    ? <ManualStage model={manual} scene={step.scene} callouts={false} omit={omit} />
+    : <Furniture step={step} guide={guide} design={design} index={index} />
+}
+
+const CELLS = [25, 50, 100, 200, 250, 500, 1000]
+/** 地面一格的边长（mm）：场景范围的 1/5 上下取整，全景里一格一两百像素、虚线看得清，和首页地面差不多 */
+const floorCell = (size: number) => CELLS.reduce((a, b) => (Math.abs(Math.log((b * 5) / size)) < Math.abs(Math.log((a * 5) / size)) ? b : a))
+
+/** 封面渲染页（scripts/covers.mjs）：不画提示用的红圈；竖版画面按 coverZoom 倍的步骤镜头距离取景 */
+export const sceneFlags = { cover: false, coverZoom: 1.2 }
+
+function SceneContent({ tone }: { tone: StageTone }) {
   const { step: raw, guide, design, index } = useCurrentStep()
   const model = useApp((s) => s.model)
   const step = useMemo(() => (design ? raw : posed(raw, model.dims.height)), [raw, design, model])
@@ -343,49 +444,47 @@ function SceneContent() {
   const viewNonce = useApp((s) => s.viewNonce)
   const stepKey = `${guide.id}:${index}:${design}:${step.id}:${viewNonce}`
   const manual = isManualModel(model) ? model : null
+  const stage = manual ? manual.scene.stageSize : Math.max(model.dims.width, model.dims.height)
   const focusAt = step.tool?.at ?? step.marker ?? step.focus
   const hasDetail = !design && (!!step.detail || !!step.scene?.zoom) && showDetail
-  const showRing = !design && step.motion !== 'explode' && (!!step.tool || !!step.marker || (!!step.detail && !step.autoRotate))
+  const showRing = !sceneFlags.cover && !design && step.motion !== 'explode' && (!!step.tool || !!step.marker || (!!step.detail && !step.autoRotate))
   return (
     <>
       {manual && step.scene
         ? <ManualStage model={manual} scene={step.scene} />
         : <Furniture step={step} guide={guide} design={design} index={index} />}
       {!design && step.tool && <Tool key={stepKey} tool={step.tool} stepKey={stepKey} />}
-      {showRing && <FocusRing at={focusAt} />}
+      {!sceneFlags.cover && <FocusRing at={focusAt} show={showRing} />}
       {!manual && <Overlays step={step} />}
-      <Grid
-        args={[20000, 20000]}
-        position={[0, -0.5, 0]}
-        cellSize={manual ? 50 : 100}
-        cellThickness={0.6}
-        cellColor="#ece8e0"
-        sectionSize={manual ? 250 : 500}
-        sectionThickness={1}
-        sectionColor="#ddd7cc"
-        fadeDistance={manual ? manual.scene.stageSize * 3 : Math.max(model.dims.width, model.dims.height) * 5}
-        fadeStrength={2}
-        infiniteGrid
+      <StageFloor
+        span={stage * 1.5}
+        size={manual ? stage : stage * 2}
+        cell={floorCell(stage)}
+        fade={manual ? stage * 3 : stage * 5}
+        look={{ line: tone.line, width: 1.1, contact: 0.5, cast: 0.24 }}
       />
       <CameraRig step={step} stepKey={stepKey} />
-      <PanelOffset shifted={panel !== 'none'} />
+      <ViewOffset panel={panel} />
       <FocusProjector at={focusAt} enabled={hasDetail} />
     </>
   )
 }
 
-export function MainCanvas() {
+/** plain：封面渲染页用，白底白网格 */
+export function MainCanvas({ plain = false }: { plain?: boolean }) {
   const manual = useApp((s) => isManualModel(s.model))
+  const tone = plain ? STAGE_TONES.white : STAGE
   return (
     <Canvas
       className="main-canvas"
+      style={{ background: tone.bg }}
       flat
       dpr={[1, 2]}
       camera={{ fov: 30, near: 10, far: 40000, position: [2400, 1800, 3200] }}
-      gl={{ antialias: true }}
-      onCreated={({ gl }) => gl.setClearColor('#fbfaf7')}
+      gl={{ antialias: true, alpha: true }}
+      onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
     >
-      <SceneContent />
+      <SceneContent tone={tone} />
       <OrbitControls makeDefault enableDamping dampingFactor={0.12} minDistance={manual ? 40 : 150} maxDistance={12000} />
     </Canvas>
   )

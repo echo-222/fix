@@ -1,0 +1,36 @@
+{
+  "scooter": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "b13b7c81-b964-49fd-a01b-f5122f028fd1",
+        "credits": 40,
+        "seconds": 151,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_63e60fa6-2b20-46e5-bec3-de9d590b7fa9"
+        },
+        "file": "models/xiaomi-scooter-3-lite/raw/scooter-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 5,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-scooter-3-lite/raw/scooter-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:40.079Z",
+    "file": "public/models/xiaomi-scooter-3-lite/scooter.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:20.047Z"
+  }
+}

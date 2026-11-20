@@ -361,11 +361,15 @@ export function getGeometry(spec: GeoSpec): BufferGeometry {
   return g
 }
 
-/** 曲面轮廓：没有硬边的曲面（外壳、线缆）由 LineMesh 每帧按视角求轮廓边 */
-const silhouetteReg = new WeakSet<BufferGeometry>()
+/**
+ * 曲面轮廓：没有硬边的曲面（外壳、线缆）由 LineMesh 每帧按视角求轮廓边。
+ * smooth：判断朝向前把面法线和相邻面平均几轮，表面细碎起伏的网格（AI 生成）不再满屏碎线。
+ */
+const silhouetteReg = new WeakMap<BufferGeometry, number>()
 export const hasSilhouette = (g: BufferGeometry) => silhouetteReg.has(g)
-export function withSilhouette(g: BufferGeometry) {
-  silhouetteReg.add(g)
+export const silhouetteSmooth = (g: BufferGeometry) => silhouetteReg.get(g) ?? 0
+export function withSilhouette(g: BufferGeometry, smooth = 0) {
+  silhouetteReg.set(g, smooth)
   return g
 }
 

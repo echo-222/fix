@@ -1,0 +1,15 @@
+# 装到服务器的 /etc/systemd/system/dongle-backup.service，由 dongle-backup.timer 每天凌晨跑一次
+[Unit]
+Description=懂了 Dongle 数据备份
+
+[Service]
+Type=oneshot
+User=dongle
+Group=dongle
+WorkingDirectory=/srv/dongle/current
+Environment=DATA_DIR=/var/lib/dongle
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning server/cli.ts backup /var/backups/dongle 14
+# 用户上传的图片只增不改，增量拷过去就行
+ExecStart=-/usr/bin/cp -an /var/lib/dongle/community-media /var/backups/dongle/
+# 网页导入的说明书（场景脚本、页面图、外观模型）会重新生成：覆盖拷过去，删掉的也在备份里留着
+ExecStart=-/usr/bin/cp -a /var/lib/dongle/imported /var/backups/dongle/

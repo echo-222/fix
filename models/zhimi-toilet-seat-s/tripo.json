@@ -1,0 +1,18 @@
+{
+  "note": "用官方产品图生成（来源见 refs/sources.json；图片不进 git）。马桶盖整机（座盖打开）用苏宁智米自营旗舰店主图 g1：涂掉 smartmi 字样、遥控器 + 挂架、手机与信号圈，遥控器挡住的座圈左外沿按两侧颜色补齐，裁到马桶盖再补成正方形；侧面控制板的按键、指示灯和座圈顶上那排小灯用 scripts/ref-cover.mjs 按机身颜色抹平（refs/seat-body.jpg），它们在说明书里做成几何体，参考图里留着会画成两层。同一个模型挂两个零件：本体 crop 掉座盖，座盖按打开角度转平后 crop 出来。遥控器不生成模型：正面全是按键（说明书里是几何体），留着按键会叠成两层，抹掉又只剩一块白板，改成整个几何体；早先生成的版本记在 tripo.log.json 的 remote。生成后本地 optimize。",
+  "jobs": [
+    {
+      "name": "seat",
+      "steps": [
+        {
+          "type": "image-to-model",
+          "image": "models/zhimi-toilet-seat-s/refs/seat-body.jpg",
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed"
+        },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

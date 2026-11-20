@@ -1,0 +1,138 @@
+{
+  "ro": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "0c792417-bcae-4ad9-a42c-a7de4111e246",
+        "credits": 40,
+        "seconds": 198,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_a8e80670-d665-4399-912a-4fbea708c050"
+        },
+        "file": "models/xiaomi-water-purifier/raw/ro-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 6,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-water-purifier/raw/ro-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:14.718Z",
+    "file": "public/models/xiaomi-water-purifier/ro.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:41.077Z"
+  },
+  "faucet": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "ad0e2244-70c0-4de8-b9db-192a85b396ca",
+        "credits": 40,
+        "seconds": 155,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_52531ff7-bead-4a52-bbf8-c0221e35aaf7"
+        },
+        "file": "models/xiaomi-water-purifier/raw/faucet-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 31,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-water-purifier/raw/faucet-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:14.717Z",
+    "file": "public/models/xiaomi-water-purifier/faucet.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:24.928Z"
+  },
+  "purifier": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "116dd5e3-1af1-4d72-a4d1-771e7049eb09",
+        "credits": 40,
+        "seconds": 216,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_aee3e705-b4d7-49c3-96a2-8c79c23ae31d"
+        },
+        "file": "models/xiaomi-water-purifier/raw/purifier-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 7,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-water-purifier/raw/purifier-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:14.714Z",
+    "file": "public/models/xiaomi-water-purifier/purifier.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:26:01.314Z"
+  },
+  "ppc": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "8876ff71-8ef1-4b60-b656-2b04db63f05a",
+        "credits": 40,
+        "seconds": 189,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_cebe6c70-21af-47b8-bb2e-cf348039dd11"
+        },
+        "file": "models/xiaomi-water-purifier/raw/ppc-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 6,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/xiaomi-water-purifier/raw/ppc-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T05:22:14.717Z",
+    "file": "public/models/xiaomi-water-purifier/ppc.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T05:25:34.392Z"
+  }
+}

@@ -1,0 +1,11 @@
+# 装到服务器的 /etc/systemd/system/dongle-backup.timer
+[Unit]
+Description=每天备份懂了 Dongle 的数据
+
+[Timer]
+OnCalendar=*-*-* 04:00:00
+Persistent=true
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target

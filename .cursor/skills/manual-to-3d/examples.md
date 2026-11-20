@@ -29,45 +29,41 @@
 
 ## 3. 关键片段
 
-翻面 + 取出接收器（同一步内用 delay 排先后）：
+拔出（via 出仓口，避免穿壳）：
 ```ts
-set: {
-  mouse: { parent: null, at: [250, 22, 30], rot: [0, 0, 180], lift: 45, dur: 1.4 },
-  'recv-c': { parent: null, at: [205, 42, 80], rot: [0, 0, 0], lift: 20, delay: 1.5, dur: 1.2 },
-}
+'recv-a': { parent: null, at: [205, 42, 70], via: [253, 52, 66], dur: 1.2 },
 ```
 
-插入电脑接口（via 让它从侧面进入）：
+插入（用 `plug`，不要手算 parent/at/rot/via）：
 ```ts
-'recv-a': { parent: 'laptop', at: [-160, 7, -25], rot: [0, 0, 0], via: [-215, 12, -65], dur: 1.8 },
+'recv-a': { plug: { hole: 'port-la2', back: 55 }, lift: 25, dur: 1.8 },
 screen: { ui: { cursor: true, toast: '发现新设备 · USB Receiver' }, delay: 1.9 },
 ```
 
-靠近接收器、黄灯闪烁后熄灭，细节窗从桌面下方看底部灯：
+靠近时绕开笔记本 + 底部灯细节窗：
 ```ts
+const FRONT: Vec3 = [-60, 30, 210]
 set: {
-  mouse: { parent: null, at: [-235, 0, -40], rot: [0, -60, 0], lift: 45, dur: 1.6 },
+  mouse: { parent: null, at: [-265, 0, -40], rot: [0, -60, 0], via: FRONT, lift: 30, dur: 1.8 },
   'status-led': { light: 'blinkThenOff', color: '#f5b400', delay: 1.6 },
 },
 zoom: { target: 'status-led', dir: 'under', dist: 120, caption: '底部指示灯（从桌面下方看）' },
 ```
 
-充电线：线缆零件引用两个插头，插头各自换父级，线缆实时弯曲：
+充电线两端各自 `plug`：
 ```ts
-{ id: 'cable', name: 'USB 充电线', shape: { type: 'cable',
-  from: { part: 'cable-a', at: [-18, 0, 0], dir: [-1, 0, 0] },
-  to:   { part: 'cable-c', at: [-14, 0, 0], dir: [-1, 0, 0] }, r: 1.8, slack: 1.2 }, visible: false }
-// 步骤里
-'cable-a': { visible: true, parent: 'laptop', at: [-160, 7, -25], delay: 1.2, dur: 1.4, lift: 30 },
-'cable-c': { visible: true, parent: 'mouse', at: [0, 3.2, -57.5], rot: [0, -90, 0], delay: 1.2, dur: 1.4, lift: 30 },
+'cable-a': { visible: true, plug: 'port-la2', delay: 1.2, dur: 1.4, lift: 30 },
+'cable-c': { visible: true, plug: 'port-c', delay: 1.2, dur: 1.4, lift: 30 },
 ```
 
-复用步骤：USB-A 与 Type-C 的「开电源 / 拨 2.4G / 靠近 / 使用」用同一个函数 `pairSteps(prefix, recv, portZ, page)` 生成。
+复用：`pairSteps(prefix, recv, portZ, page)` 生成开电源 / 拨 2.4G / 靠近 / 使用。设计走查见 [walkthrough.md](walkthrough.md)。
 
-## 4. 视觉验证中发现并修正的问题
+## 4. 审计与截图里修过的问题
 
 | 现象 | 原因 | 修正 |
 |---|---|---|
-| 近景标注飞出画面 | offset 按远景写的（70 mm+） | 近景改成 25–50 mm |
-| 接口近景看不出接收器插着 | 镜头正对接口，接收器只露出端面 | 镜头改为前左上方斜看 |
-| 截图里蓝灯不亮 | 截在闪烁的灭半周期 | 换一个时间点再截 |
+| 穿地 1.6 mm | 拨钮 / 接收器凸出底面 | 抬高局部 y |
+| 途中穿笔记本 | 贴桌面横移 | `via: FRONT` + `lift` |
+| 近景标注飞出 / 挡细节窗 | offset 过大 | 25–50 mm，错开细节窗 |
+| 接口只看见插头端面 | 镜头正对 | 斜看 |
+| 闪烁灯截图是灭的 | 截在灭半周期 | `npm run shoot` 取亮半周期 |

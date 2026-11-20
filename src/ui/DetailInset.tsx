@@ -61,7 +61,6 @@ export function DetailInset() {
         <line ref={line} strokeDasharray="3 4" />
       </svg>
       <div className="detail" ref={circle}>
-        <span className="detail-pill">细节</span>
         <div className="detail-canvas">
           {manual
             ? <ManualDetailCanvas model={manual} scene={step.scene!} />

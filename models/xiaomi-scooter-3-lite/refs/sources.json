@@ -1,0 +1,26 @@
+{
+  "note": "米家电动滑板车3 青春版（海外名 Xiaomi Electric Scooter 3 Lite，同一款车：型号 MJDDHBC03ZM / dreame.scooter.t2185）的官方产品图。只用于 Tripo 图生模型，不进 public/。",
+  "fetched": "2026-11-02",
+  "products": {
+    "scooter": {
+      "product": "Xiaomi Electric Scooter 3 Lite（黑色）",
+      "page": "https://www.mi.com/global/product/xiaomi-electric-scooter-3-lite/",
+      "files": {
+        "mi/pms_1666841484.7244825.png": "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1666841484.7244825.png",
+        "mi/pms_1672997367.00571923.png": "https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1672997367.00571923.png"
+      },
+      "derived": {
+        "scooter-34.png": "pms_1666841484（透明底 3/4 前左视角，1600²）：alpha < 110 的半透明地面投影去掉、110–200 线性过渡保住抗锯齿边，裁到车身包围盒，铺白底补成正方形（边距 12%），缩到 1024²。pms_1672997367 是正侧面图，只用来核对比例和折叠位置。"
+      }
+    },
+    "details": {
+      "product": "米家电动滑板车3 青春版（小米官方旗舰店 · 苏宁）",
+      "page": "https://product.suning.com/0070977076/000000012371128160.html",
+      "files": {
+        "suning/NVbsVGSvJfl300Nfpu4s6Q.jpg": "https://uimgproxy.suning.cn/uimg1/sop/commodity/NVbsVGSvJfl300Nfpu4s6Q.jpg"
+      },
+      "derived": {},
+      "use": "细节图：充电口红色橡胶塞在前管左侧、折叠机构前置、后挡泥板卡扣与机械刹拉线位置，只用来摆几何零件，不生成模型。"
+    }
+  }
+}

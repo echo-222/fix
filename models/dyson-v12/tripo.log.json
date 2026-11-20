@@ -1,0 +1,104 @@
+{
+  "wand": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "bbd11212-4d75-457b-9319-a2a52dd5f7b8",
+        "credits": 40,
+        "seconds": 119,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_44b223fe-276b-4b35-ab05-bbde205da20b"
+        },
+        "file": "models/dyson-v12/raw/wand-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 26,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/dyson-v12/raw/wand-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T06:47:48.915Z",
+    "file": "public/models/dyson-v12/wand.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:50:17.925Z"
+  },
+  "head": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "d4d057fa-5d61-4bd7-834e-3d5fd0c68f17",
+        "credits": 40,
+        "seconds": 152,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_e30e86de-fd50-4cfa-a8e6-32b20eac9fc8"
+        },
+        "file": "models/dyson-v12/raw/head-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 7,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/dyson-v12/raw/head-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T06:47:48.914Z",
+    "file": "public/models/dyson-v12/head.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:50:36.779Z"
+  },
+  "body": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "379a826b-1f8d-40c1-92ca-80db3eb9d8a2",
+        "credits": 40,
+        "seconds": 170,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_3c3c5157-c629-4651-8b71-175ddcf32b02"
+        },
+        "file": "models/dyson-v12/raw/body-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 7,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/dyson-v12/raw/body-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-02T06:47:48.909Z",
+    "file": "public/models/dyson-v12/body.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-02T06:50:56.236Z"
+  }
+}

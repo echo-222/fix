@@ -1,0 +1,38 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归小米 / 零售商所有，只在本地用作生成输入，不进 git、不放 public/。小米智能摄像机2 云台版（MJSXJ11CM / MJSXJ17CM，米家 chuangmi.camera.039a01）海外版即 Xiaomi Smart Camera C400（chuangmi.camera.039a04 / 039c04），外观相同；国内版底座印 mi 方标，海外版印 xiaomi 字样。",
+  "fetched": "2026-11-02",
+  "products": {
+    "camera": {
+      "product": "小米智能摄像机2 云台版（海外版 C400）· 白色 · 头部球体 + 底座",
+      "page": "https://product.suning.com/0000000000/12429607755.html",
+      "files": {
+        "cand/suning/QW-JpgBXsvB8OdSuHacd7g.png": "https://imgservice.suning.cn/uimg1/b2c/image/QW-JpgBXsvB8OdSuHacd7g.png"
+      },
+      "derived": {
+        "camera-front.png": "QW-Jpg（透明底正面主图）铺白底，按不透明区域裁到产品外框，四周留 9% 白边补成正方形，放大到 1024 × 1024；没有涂改"
+      },
+      "reference_only": {
+        "cand/suning/F4gyHXHRpw6xFa9y4QjORg.jpg": {
+          "url": "https://imgservice.suning.cn/uimg1/b2c/image/F4gyHXHRpw6xFa9y4QjORg.jpg",
+          "page": "https://product.suning.com/0000000000/12429607755.html",
+          "use": "背面：喇叭放音区、重置键、Type-C 口的位置和尺寸比例"
+        },
+        "cand/suning/YgY4e_hdChrFEmZ6v0WjOg.png": {
+          "url": "https://imgservice.suning.cn/uimg1/b2c/image/YgY4e_hdChrFEmZ6v0WjOg.png",
+          "page": "https://product.suning.com/0000000000/12339897846.html",
+          "use": "同一张正面图（MJSXJ11CM 商品页），核对用"
+        },
+        "cand/suning/DTk5a5SnOAwr9IeUN6jmPA.jpg": {
+          "url": "https://imgservice.suning.cn/uimg1/b2c/image/DTk5a5SnOAwr9IeUN6jmPA.jpg",
+          "page": "https://product.suning.com/0000000000/12429607755.html",
+          "use": "俯视：球体分模线、镜头窗口开口"
+        },
+        "cand/g-47b25477e3fdae73f76d1c6ad97155ad.png": {
+          "url": "https://i02.appmifile.com/mi-com-product/fly-birds/xiaomi-smart-camera-c400/pc/47b25477e3fdae73f76d1c6ad97155ad.png",
+          "page": "https://www.mi.com/global/product/xiaomi-smart-camera-c400/",
+          "use": "侧面与吸顶倒装外观"
+        }
+      }
+    }
+  }
+}

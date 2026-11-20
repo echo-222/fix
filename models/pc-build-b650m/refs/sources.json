@@ -1,0 +1,44 @@
+{
+  "note": "Tripo 图生模型的参考图。图片版权归各品牌 / 零售商所有，只在本地用作生成输入，不进 git、不放 public/。型号按说明书的「示意」尺寸挑选：与 MAG B650M MORTAR WIFI 搭配的常见装机配置。",
+  "fetched": "2026-10-29",
+  "products": {
+    "gpu": {
+      "product": "MSI GeForce RTX 4060 VENTUS 2X BLACK 8G OC（199 × 120 × 42 mm，单 8-pin）",
+      "page": "https://www.newegg.com/msi-rtx-4060-ventus-2x-black-8g-oc-geforce-rtx-4060-8gb-graphics-card-double-fans/p/N82E16814137804",
+      "official": "https://www.msi.com/Graphics-Card/GeForce-RTX-4060-VENTUS-2X-BLACK-8G-OC",
+      "files": {
+        "gpu-front.jpg": "https://c1.neweggimages.com/productimage/nb1280/14-137-804-01.jpg",
+        "gpu-back.jpg": "https://c1.neweggimages.com/productimage/nb1280/14-137-804-03.jpg",
+        "gpu-right.jpg": "https://c1.neweggimages.com/productimage/nb1280/14-137-804-10.jpg",
+        "gpu-3q.jpg": "https://c1.neweggimages.com/productimage/nb1280/14-137-804-04.jpg"
+      }
+    },
+    "psu": {
+      "product": "MSI MAG A650BN（ATX，150 × 86 × 140 mm，非模组）",
+      "page": "https://www.newegg.com/msi-intel-atx-12v-650-w-80-plus-bronze-certified-power-supply-black-mag-a650bn/p/N82E16817701013",
+      "official": "https://www.msi.com/Power-Supply/MAG-A650BN",
+      "files": {
+        "psu-3q.jpg": "https://c1.neweggimages.com/productimage/nb1280/17-701-013-04.jpg"
+      },
+      "derived": {
+        "psu-3q-clean.jpg": "psu-3q：右边缘的线缆涂白",
+        "psu-body.jpg": "psu-3q-clean 再用 scripts/ref-cover.mjs 按机壳颜色抹平背面的开关 282,495,350,642（开关在说明书里是几何体）"
+      }
+    },
+    "cooler": {
+      "product": "AMD Wraith Stealth（锐龙 5 7600 / 9600 盒装附带，螺丝固定）",
+      "page": "https://www.amd.com/en/products/processors/ecosystem/cpu-cooler-solutions.html",
+      "files": {
+        "cooler-3q.png": "https://www.amd.com/content/dam/amd/en/images/products/4767000-cooling-wraith-stealth.png"
+      }
+    },
+    "ram": {
+      "product": "Kingston FURY Beast DDR5 黑色（133.35 × 34.9 × 6.62 mm）",
+      "page": "https://www.newegg.com/kingston-technology-corp-fury-beast-32gb-ddr5-5600-cas-latency-cl36-memory-black/p/N82E16820242897",
+      "official": "https://www.kingston.com/en/memory/gaming/kingston-fury-beast-ddr5-memory",
+      "files": {
+        "ram-3q.jpg": "https://c1.neweggimages.com/productimage/nb1280/BDFPD23052211H1NCF2.jpg"
+      }
+    }
+  }
+}

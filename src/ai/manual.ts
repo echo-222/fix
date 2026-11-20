@@ -1,3 +1,4 @@
+import { apiFetch } from '../net'
 import { DEFAULT_CONFIG, normalizeConfig, type DeskConfig } from '../domain/desk'
 
 export type Category = 'aluminum_desk' | 'aluminum_other' | 'other_furniture' | 'not_manual'
@@ -76,9 +77,19 @@ export function specToConfig(spec: ManualSpec): Pick<ImportResult, 'config' | 's
   return { config: normalizeConfig(cfg), sources }
 }
 
-export async function getAiStatus(): Promise<{ configured: boolean; model: string | null }> {
+export interface AiStatus {
+  configured: boolean
+  model: string | null
+  /** 说明书 → 3D 流水线可用（开发服务器 + 已配置 key） */
+  manual?: boolean
+  manualModel?: string | null
+  /** 配了 Tripo：导入时可以生成真实外观模型 */
+  tripo?: boolean
+}
+
+export async function getAiStatus(): Promise<AiStatus> {
   try {
-    const r = await fetch('/api/status')
+    const r = await apiFetch('/api/status')
     if (!r.ok) throw new Error()
     return await r.json()
   } catch {
@@ -87,11 +98,7 @@ export async function getAiStatus(): Promise<{ configured: boolean; model: strin
 }
 
 export async function analyzeManual(images: string[], hint?: string): Promise<ImportResult> {
-  const r = await fetch('/api/analyze', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ images, hint }),
-  })
+  const r = await apiFetch('/api/analyze', { body: { images, hint } })
   const data = await r.json().catch(() => ({}))
   if (!r.ok) throw new Error(data.error || `解析失败（${r.status}）`)
   const raw = data.result as Partial<ManualSpec>

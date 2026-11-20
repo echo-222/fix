@@ -1,0 +1,188 @@
+{
+  "station-seg": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "eb79ef86-4a52-48f2-9817-72f1c09eaa9b",
+        "credits": 10,
+        "seconds": 155,
+        "body": {
+          "prompt": "A generic robot vacuum self-cleaning docking station: a tall white plastic tower about 340 mm wide, 490 mm tall and 560 mm deep, with two removable water tanks with handles on top (clean water and dirty water), a hinged lid, and a wide low ramp base plate in front for the robot to drive onto. Realistic product, no logos, no text.",
+          "negative_prompt": "logo, text, robot vacuum, cables",
+          "texture": false,
+          "pbr": false,
+          "model_seed": 20261029,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/roborock-p10/raw/station-seg-1-text-to-model.glb"
+      },
+      {
+        "type": "segment",
+        "task_id": "cb7c2490-b373-4a2c-acea-1631616eddda",
+        "credits": 40,
+        "seconds": 53,
+        "body": {
+          "model": "v2.0-20260430",
+          "segmentation_granularity": "balanced",
+          "input": "eb79ef86-4a52-48f2-9817-72f1c09eaa9b"
+        },
+        "file": "models/roborock-p10/raw/station-seg-2-segment.glb"
+      },
+      {
+        "type": "complete",
+        "task_id": "2ca035d3-828d-4852-8ec6-a4cee33dc407",
+        "credits": 50,
+        "seconds": 510,
+        "body": {
+          "completion_mode": "ai_completion",
+          "input": "cb7c2490-b373-4a2c-acea-1631616eddda"
+        },
+        "file": "models/roborock-p10/raw/station-seg-3-complete.glb"
+      }
+    ],
+    "started": "2026-10-29T05:34:51.423Z",
+    "file": "models/roborock-p10/raw/station-seg-3-complete.glb",
+    "credits": 100,
+    "done": true,
+    "finished": "2026-10-29T05:46:50.221Z",
+    "experiment": "分割 + 补全：100 积分、12 分钟，一个水箱和机身没分开；原始结果约 148 万面"
+  },
+  "station": {
+    "steps": [
+      {
+        "type": "text-to-model",
+        "task_id": "a265def7-04bb-499e-9b8b-f2884c60de05",
+        "credits": 30,
+        "seconds": 167,
+        "body": {
+          "prompt": "A generic robot vacuum self-cleaning docking station: a tall white plastic tower about 340 mm wide, 490 mm tall and 560 mm deep, with two removable water tanks with handles on top (clean water and dirty water), a hinged lid, and a wide low ramp base plate in front for the robot to drive onto. Realistic product, no logos, no text.",
+          "negative_prompt": "logo, text, robot vacuum, cables",
+          "texture": false,
+          "pbr": false,
+          "generate_parts": true,
+          "model_seed": 20261029,
+          "model": "v3.1-20260211"
+        },
+        "file": "models/roborock-p10/raw/station-parts-1-text-to-model.glb"
+      },
+      {
+        "type": "decimate",
+        "task_id": "e93d489c-d587-4099-b437-8f393871b920",
+        "credits": 30,
+        "seconds": 448,
+        "body": {
+          "input": "a265def7-04bb-499e-9b8b-f2884c60de05",
+          "face_limit": 20000
+        },
+        "file": "models/roborock-p10/raw/station-parts-lite-1-decimate.glb"
+      }
+    ],
+    "started": "2026-10-29T05:34:51.415Z",
+    "finished": "2026-10-29T06:00:28.386Z",
+    "done": true,
+    "file": "public/models/roborock-p10/station.glb",
+    "credits": 60
+  },
+  "robot": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "482fa44d-d270-4a27-9fd2-5ec3597751e3",
+        "credits": 40,
+        "seconds": 358,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211"
+        },
+        "file": "models/roborock-p10/raw/robot-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 26,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/roborock-p10/raw/robot-2-optimize.glb"
+      }
+    ],
+    "started": "2026-11-03T15:25:24.430Z",
+    "file": "public/models/roborock-p10/robot.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-11-03T15:26:04.744Z"
+  },
+  "base": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "38c2cf81-5425-4a8f-910e-0b9ba778ce47",
+        "credits": 40,
+        "seconds": 196,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_a9be6b8d-3840-4f2e-828a-4ebf91fdfaf6"
+        },
+        "file": "models/roborock-p10/raw/base-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 22,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/roborock-p10/raw/base-2-optimize.glb"
+      }
+    ],
+    "started": "2026-10-29T15:59:03.263Z",
+    "file": "public/models/roborock-p10/base.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-10-29T16:02:48.789Z"
+  },
+  "robot-with-buttons": {
+    "steps": [
+      {
+        "type": "image-to-model",
+        "task_id": "6aafdf3f-2da7-4ae2-b0ee-0df72b200db2",
+        "credits": 40,
+        "seconds": 221,
+        "body": {
+          "texture": true,
+          "pbr": true,
+          "texture_quality": "detailed",
+          "model": "v3.1-20260211",
+          "input": "file_7cdd3f9a-abae-47b3-8b46-bf7e983e72c5"
+        },
+        "file": "models/roborock-p10/raw/robot-1-image-to-model.glb"
+      },
+      {
+        "type": "optimize",
+        "credits": 0,
+        "seconds": 11,
+        "body": {
+          "ratio": 0.03,
+          "error": 0.001,
+          "texture_size": 1024
+        },
+        "file": "models/roborock-p10/raw/robot-2-optimize.glb"
+      }
+    ],
+    "started": "2026-10-29T15:59:03.266Z",
+    "file": "public/models/roborock-p10/robot.glb",
+    "credits": 40,
+    "done": true,
+    "finished": "2026-10-29T16:03:00.167Z",
+    "note": "参考图里还带着按键，和几何体按键画成两层；换成抹平按键的参考图重新生成"
+  }
+}

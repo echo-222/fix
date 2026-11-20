@@ -1,0 +1,33 @@
+{
+  "note": "用苏宁自营 Nespresso C30 白色商品页的「包装说明」图（四件分开摆在白底上：主机、水箱、胶囊盒、滴水盘）逐件裁出生成，来源与处理见 refs/sources.json；主机顶上两个咖啡键用 scripts/ref-cover.mjs 按机身颜色抹平（refs/body-clean.jpg），按键在说明书里是几何体；图片不进 git。生成后本地 optimize。",
+  "jobs": [
+    {
+      "name": "body",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nespresso-essenza-mini/refs/body-clean.jpg", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "tank",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nespresso-essenza-mini/refs/tank.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "bin",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nespresso-essenza-mini/refs/bin.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    },
+    {
+      "name": "tray",
+      "steps": [
+        { "type": "image-to-model", "image": "models/nespresso-essenza-mini/refs/tray.png", "texture": true, "pbr": true, "texture_quality": "detailed" },
+        { "type": "optimize", "ratio": 0.03, "error": 0.001, "texture_size": 1024 }
+      ]
+    }
+  ]
+}

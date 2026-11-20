@@ -1,114 +1,41 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { createContext, useContext, useLayoutEffect, useMemo, useRef } from 'react'
 import {
-  BufferGeometry, CanvasTexture, CircleGeometry, DoubleSide, Float32BufferAttribute, Group, Matrix4, Mesh, MeshBasicMaterial,
-  PlaneGeometry, Quaternion, Shape as ThreeShape, ShapeGeometry, SRGBColorSpace, Vector3,
+  BufferGeometry, CanvasTexture, CircleGeometry, DoubleSide, Float32BufferAttribute, Group, Mesh, MeshBasicMaterial,
+  PlaneGeometry, Shape as ThreeShape, ShapeGeometry, SRGBColorSpace, Vector2, Vector3,
 } from 'three'
-import type { ManualModel, PartFrame, ScenePart, SceneStep } from '../../domain/manual/compile'
-import type { Callout, Fill, Light, ScreenUI, Shape, Vec3 } from '../../domain/manual/types'
-import { anim } from '../../store'
+import { LineSegments2 } from 'three/examples/jsm/lines/LineSegments2.js'
+import { LineSegmentsGeometry } from 'three/examples/jsm/lines/LineSegmentsGeometry.js'
+import { hasRealLook, type ManualModel, type ScenePart, type SceneStep } from '../../domain/manual/compile'
+import { activeFrame, bakedState, ledLit, solvePose, stepTiming, type Pose, type StepTiming } from '../../domain/manual/pose'
+import type { Callout, Fill, Finish, ScreenUI, Shape, Vec3 } from '../../domain/manual/types'
+import { anim, useApp } from '../../store'
 import { calloutScreen } from '../focus'
-import { INK, LineMesh, MATS, SilhouetteLines, type FillTone, type LineTone } from '../LineArt'
+import { INK, LineMesh, MATS, SilhouetteLines, fillMat, lineMat, lookFlags, type FillTone, type LineTone } from '../LineArt'
+import { finishMaterial } from './finishes'
+import { ModelView, RealLighting } from './ModelView'
+import { OrigamiView } from './OrigamiView'
 import { drawScreen } from './screenUI'
 import { solidGeometry } from './shapes'
 
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
-const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
 const elapsed = () => (performance.now() - anim.start) / 1000
 const DEG = Math.PI / 180
 
 const FILL: Record<Fill, FillTone> = { white: 'fill', warm: 'fillWarm', shade: 'fillShade', dark: 'fillDark' }
 
-interface Stage {
-  mats: Map<string, Matrix4>
-  vis: Map<string, boolean>
-  /** glide 动作当前的桌面偏移（x, z），屏幕光标同步 */
-  glide: [number, number]
+/** 真实材质模式下怎么给几何体上材质；real = false 时一律线稿 */
+interface Look {
+  real: boolean
+  byFill?: Partial<Record<Fill, Finish>>
+}
+const LINE_ART: Look = { real: false }
+
+interface Stage extends Pose {
   scene: SceneStep
-  settle: number
+  timing: StepTiming
 }
 const StageContext = createContext<Stage | null>(null)
 const useStage = () => useContext(StageContext)!
-
-const glideAt = (t: number): [number, number] => [42 * Math.sin(t * 1.5), 20 * Math.sin(t * 3)]
-
-function sameTransform(a: PartFrame, b: PartFrame) {
-  return a.parent === b.parent && a.pos.every((v, i) => Math.abs(v - b.pos[i]) < 1e-6) && a.quat.every((v, i) => Math.abs(v - b.quat[i]) < 1e-6)
-}
-
-/** 这一步状态在 t 时刻生效的那一份（灯 / 屏幕在过渡开始时切换） */
-const activeFrame = (scene: SceneStep, id: string, t: number) => (t >= scene.to[id].delay ? scene.to[id] : scene.from[id])
-
-function ledLit(scene: SceneStep, id: string, t: number) {
-  const to = scene.to[id]
-  const f = activeFrame(scene, id, t)
-  const phase = f === to ? t - to.delay : t + 10
-  const blink = (phase * 2.4) % 1 < 0.55
-  const L: Light = f.light
-  return L === 'on' || (L === 'blink' && blink) || (L === 'blinkThenOff' && phase < 3.6 && blink) ? f.color : null
-}
-
-// ---------- 每帧求所有零件的世界矩阵 ----------
-
-const tmp = {
-  p0: new Vector3(), p1: new Vector3(), p: new Vector3(), c: new Vector3(), s: new Vector3(),
-  q0: new Quaternion(), q1: new Quaternion(), q: new Quaternion(),
-  local: new Matrix4(), m: new Matrix4(), one: new Vector3(1, 1, 1), axis: new Vector3(),
-}
-const IDENTITY = new Matrix4()
-const AXES = { x: new Vector3(1, 0, 0), y: new Vector3(0, 1, 0), z: new Vector3(0, 0, 1) }
-
-function solve(stage: Stage, order: string[], changed: Set<string>, t: number) {
-  const { scene, mats, vis } = stage
-  const { p0, p1, p, c, s, q0, q1, q, local, m, one } = tmp
-  stage.glide = [0, 0]
-  for (const id of order) {
-    const f = scene.from[id]
-    const g = scene.to[id]
-    const moving = changed.has(id)
-    const k = moving ? easeInOut(clamp01((t - g.delay) / g.dur)) : 1
-    const parentW = g.parent ? mats.get(g.parent) ?? IDENTITY : IDENTITY
-    const world = mats.get(id) ?? new Matrix4()
-    if (!moving || (f.parent === g.parent && !g.via)) {
-      p.fromArray(f.pos).lerp(p1.fromArray(g.pos), k)
-      q.fromArray(f.quat).slerp(q1.fromArray(g.quat), k)
-      world.multiplyMatrices(parentW, local.compose(p, q, one))
-    } else {
-      m.fromArray(f.world).decompose(p0, q0, s)
-      m.multiplyMatrices(parentW, local.compose(p1.fromArray(g.pos), q1.fromArray(g.quat), one)).decompose(p1, q1, s)
-      if (g.via) {
-        c.fromArray(g.via).multiplyScalar(2).addScaledVector(p0, -0.5).addScaledVector(p1, -0.5)
-        p.copy(p0).multiplyScalar((1 - k) * (1 - k)).addScaledVector(c, 2 * (1 - k) * k).addScaledVector(p1, k * k)
-      } else p.lerpVectors(p0, p1, k)
-      q.slerpQuaternions(q0, q1, k)
-      world.compose(p, q, one)
-    }
-    if (moving && g.lift) world.elements[13] += g.lift * Math.sin(Math.PI * k)
-    for (const a of scene.actions) {
-      if (a.part !== id) continue
-      const at = t - (a.delay ?? stage.settle)
-      if (at < 0) continue
-      if (a.type === 'press') {
-        const cyc = at % 1.6
-        const down = cyc < 0.12 ? cyc / 0.12 : cyc < 0.3 ? 1 : cyc < 0.45 ? 1 - (cyc - 0.3) / 0.15 : 0
-        world.multiply(m.makeTranslation(0, -(a.depth ?? 1.2) * down, 0))
-      } else if (a.type === 'spin') {
-        world.multiply(m.makeRotationAxis(AXES[a.axis ?? 'x'], -at * 4))
-      } else if (a.type === 'shake') {
-        const amp = (a.amp ?? 1.5) * Math.sin(at * 18) * (at % 2 < 0.8 ? 1 : 0)
-        const ax = AXES[a.axis ?? 'x']
-        world.multiply(m.makeTranslation(ax.x * amp, ax.y * amp, ax.z * amp))
-      } else if (a.type === 'glide') {
-        const [dx, dz] = glideAt(at)
-        stage.glide = [dx, dz]
-        world.premultiply(m.makeTranslation(dx, 0, dz))
-      }
-    }
-    mats.set(id, world)
-    const own = f.visible === g.visible ? g.visible : g.visible ? t >= g.delay : k < 1
-    vis.set(id, own && (!g.parent || vis.get(g.parent) !== false))
-  }
-}
 
 // ---------- 形体 ----------
 
@@ -212,7 +139,7 @@ function ScreenView({ id, shape, tone }: { id: string; shape: Extract<Shape, { t
     <group>
       <mesh geometry={geo} material={mat} />
       <LineMesh geometry={geo} tone={tone} filled={false} />
-      <mesh ref={cursor} geometry={cursorGeo} material={MATS.fillDark} />
+      <mesh ref={cursor} geometry={cursorGeo} material={fillMat('fillDark')} />
     </group>
   )
 }
@@ -249,14 +176,88 @@ function TextDecal({ shape }: { shape: Extract<Shape, { type: 'text' }> }) {
   return <mesh geometry={geo} material={mat} position={[0, 0, 0.15]} renderOrder={1} />
 }
 
-function ShapeView({ id, shape, tone, fill }: { id: string; shape: Shape; tone: LineTone; fill?: Fill }) {
+function Solid({ geometry, tone, fill, finish, look, threshold }: { geometry: BufferGeometry; tone: LineTone; fill: Fill; finish?: Finish; look: Look; threshold?: number }) {
+  const f = look.real ? finish ?? look.byFill?.[fill] : undefined
+  if (!f) return <LineMesh geometry={geometry} tone={tone} fillTone={FILL[fill]} threshold={threshold} />
+  return (
+    <LineMesh geometry={geometry} tone={tone} filled={false} threshold={threshold}>
+      <mesh geometry={geometry} material={finishMaterial(f)} />
+    </LineMesh>
+  )
+}
+
+/** 纸片：正反两面、一圈边线；每条边黑线 / 浅灰折痕 / 不画，跟着这一步的 edges 走 */
+function SheetView({ id, shape, tone, fill = 'white', finish, look }: { id: string; shape: Extract<Shape, { type: 'sheet' }>; tone: LineTone; fill?: Fill; finish?: Finish; look: Look }) {
+  const stage = useStage()
+  const th = shape.th ?? 0.3
+  const face = useMemo(() => {
+    const g = new ShapeGeometry(new ThreeShape(shape.points.map(([x, z]) => new Vector2(x, -z))))
+    g.rotateX(-Math.PI / 2)
+    return g
+  }, [shape.points])
+  const lines = useMemo(() => {
+    const make = () => {
+      const l = new LineSegments2(new LineSegmentsGeometry(), MATS.ink)
+      l.frustumCulled = false
+      return l
+    }
+    return { hard: make(), soft: make(), last: undefined as string | null | undefined }
+  }, [shape.points])
+  lines.hard.material = lineMat(tone)
+  lines.soft.material = lineMat(lookFlags.soft ? tone : 'crease')
+  useFrame(() => {
+    const edges = activeFrame(stage.scene, id, elapsed()).edges
+    if (edges === lines.last) return
+    lines.last = edges
+    const seg = { h: [] as number[], s: [] as number[] }
+    const n = shape.points.length
+    for (let i = 0; i < n; i++) {
+      const c = edges?.[i] ?? 'h'
+      if (c === '-') continue
+      const [x0, z0] = shape.points[i]
+      const [x1, z1] = shape.points[(i + 1) % n]
+      for (const y of [th + 0.02, -0.02]) seg[c === 's' ? 's' : 'h'].push(x0, y, z0, x1, y, z1)
+    }
+    for (const [k, l] of [['h', lines.hard], ['s', lines.soft]] as const) {
+      l.visible = seg[k].length > 0
+      if (!l.visible) continue
+      l.geometry.dispose()
+      l.geometry = new LineSegmentsGeometry().setPositions(seg[k])
+    }
+  })
+  const lit = tone === 'accent' && !lookFlags.soft
+  const back = shape.back ?? 'white'
+  const material = (f: Fill, fin: Finish | undefined) => {
+    const real = look.real ? fin ?? look.byFill?.[f] : undefined
+    if (real) return finishMaterial(real)
+    return fillMat(lit && (f === 'white' || f === 'warm') ? 'fillAccent' : FILL[f])
+  }
+  return (
+    <group>
+      <mesh geometry={face} material={material(fill, finish)} position={[0, th, 0]} />
+      <mesh geometry={face} material={material(back, shape.backFinish)} />
+      <primitive object={lines.hard} />
+      <primitive object={lines.soft} />
+    </group>
+  )
+}
+
+function OrigamiNode({ id, shape, tone }: { id: string; shape: Extract<Shape, { type: 'origami' }>; tone: LineTone }) {
+  const stage = useStage()
+  const real = useApp((s) => s.realLook)
+  return <OrigamiView id={id} shape={shape} tone={real ? 'ink' : tone} stage={stage} now={elapsed} />
+}
+
+function ShapeView({ id, shape, tone, fill, finish, look }: { id: string; shape: Shape; tone: LineTone; fill?: Fill; finish?: Finish; look: Look }) {
   switch (shape.type) {
+    case 'sheet': return <SheetView id={id} shape={shape} tone={tone} fill={fill} finish={finish} look={look} />
+    case 'origami': return <OrigamiNode id={id} shape={shape} tone={tone} />
     case 'compound':
       return (
         <>
           {shape.items.map((it, i) => (
             <group key={i} position={it.at ?? [0, 0, 0]} rotation={(it.rot ?? [0, 0, 0]).map((v) => v * DEG) as Vec3}>
-              <ShapeView id={id} shape={it} tone={tone} fill={it.fill ?? (it.type === 'hole' ? undefined : fill)} />
+              <ShapeView id={id} shape={it} tone={tone} fill={it.fill ?? (it.type === 'hole' ? undefined : fill)} finish={it.finish ?? (it.type === 'hole' ? undefined : finish)} look={look} />
             </group>
           ))}
         </>
@@ -268,19 +269,22 @@ function ShapeView({ id, shape, tone, fill }: { id: string; shape: Shape; tone: 
     case 'hole':
       return (
         <group position={[0, 0, 0.15]}>
-          <LineMesh geometry={solidGeometry(shape)!} tone={tone} fillTone={FILL[fill ?? 'shade']} />
+          <Solid geometry={solidGeometry(shape)!} tone={tone} fill={fill ?? 'shade'} finish={finish} look={look} />
         </group>
       )
     default:
-      return <LineMesh geometry={solidGeometry(shape)!} tone={tone} fillTone={FILL[fill ?? 'white']} threshold={shape.type === 'shell' ? 30 : undefined} />
+      return <Solid geometry={solidGeometry(shape)!} tone={tone} fill={fill ?? 'white'} finish={finish} look={look} threshold={shape.type === 'shell' ? 30 : undefined} />
   }
 }
 
-function PartNode({ part, tone, register }: { part: ScenePart; tone: LineTone; register: (id: string, g: Group | null) => void }) {
+function PartNode({ part, tone, look, bare, register }: { part: ScenePart; tone: LineTone; look: Look; bare: boolean; register: (id: string, g: Group | null) => void }) {
+  const proxy = <ShapeView id={part.id} shape={part.shape} tone={tone} fill={part.fill} finish={part.finish} look={look} />
   return (
     <group ref={(g) => register(part.id, g)} matrixAutoUpdate={false}>
       <group position={part.pivot ?? [0, 0, 0]}>
-        <ShapeView id={part.id} shape={part.shape} tone={tone} fill={part.fill} />
+        {part.model && !bare
+          ? <ModelView model={part.model} shape={part.shape} tone={tone} fillTone={FILL[part.fill ?? 'white']} fallback={proxy} />
+          : proxy}
       </group>
     </group>
   )
@@ -291,10 +295,11 @@ function PartNode({ part, tone, register }: { part: ScenePart; tone: LineTone; r
 const SEG = 64
 const RAD = 10
 
-function CableView({ part, tone }: { part: ScenePart; tone: LineTone }) {
+function CableView({ part, tone, look }: { part: ScenePart; tone: LineTone; look: Look }) {
   const stage = useStage()
   const shape = part.shape as Extract<Shape, { type: 'cable' }>
   const r = shape.r ?? 1.8
+  const finish = look.real ? part.finish ?? look.byFill?.[part.fill ?? 'white'] : undefined
   const group = useRef<Group>(null)
   const geo = useMemo(() => {
     const g = new BufferGeometry()
@@ -337,7 +342,7 @@ function CableView({ part, tone }: { part: ScenePart; tone: LineTone }) {
   }, -0.5)
   return (
     <group ref={group}>
-      <mesh geometry={geo} material={MATS.fill} frustumCulled={false} />
+      <mesh geometry={geo} material={finish ? finishMaterial(finish) : fillMat('fill')} frustumCulled={false} />
       <SilhouetteLines geometry={geo} tone={tone} dynamic />
     </group>
   )
@@ -381,7 +386,7 @@ function CalloutProjector({ callouts }: { callouts: Callout[] }) {
     const { a, b } = work
     const items = calloutScreen.items
     items.length = callouts.length
-    const settled = elapsed() > stage.settle * 0.7
+    const settled = elapsed() > stage.timing.settle * 0.7
     callouts.forEach((c, i) => {
       const it = (items[i] ??= { x1: 0, y1: 0, x2: 0, y2: 0, visible: false })
       const m = stage.mats.get(c.part)
@@ -436,37 +441,29 @@ export function ManualDetailCanvas({ model, scene }: { model: ManualModel; scene
 
 // ---------- 舞台 ----------
 
-export function ManualStage({ model, scene, callouts = true }: { model: ManualModel; scene: SceneStep; callouts?: boolean }) {
+export function ManualStage({ model, scene, callouts = true, omit }: { model: ManualModel; scene: SceneStep; callouts?: boolean; omit?: Set<string> }) {
   const groups = useRef(new Map<string, Group>())
-  const stage = useMemo<Stage>(() => ({ mats: new Map(), vis: new Map(), glide: [0, 0], scene, settle: 0 }), [])
   const parts = model.scene.parts
-  const { order, changed, settle } = useMemo(() => {
-    const depth = (id: string) => {
-      let d = 0
-      for (let p = scene.to[id]?.parent; p && d < 64; p = scene.to[p]?.parent) d++
-      return d
-    }
-    const order = parts.map((p) => p.id).sort((a, b) => depth(a) - depth(b))
-    const changed = new Set(parts.filter((p) => !sameTransform(scene.from[p.id], scene.to[p.id]) || scene.from[p.id].visible !== scene.to[p.id].visible).map((p) => p.id))
-    let settle = 0
-    for (const p of parts) {
-      const g = scene.to[p.id]
-      const f = scene.from[p.id]
-      if (changed.has(p.id) || f.light !== g.light || f.ui !== g.ui) settle = Math.max(settle, g.delay + (changed.has(p.id) ? g.dur : 0))
-    }
-    return { order, changed, settle }
-  }, [scene, parts])
+  const drawn = omit ? parts.filter((p) => !omit.has(p.id)) : parts
+  const timing = useMemo(() => stepTiming(parts.map((p) => p.id), scene), [scene, parts])
+  const stage = useMemo<Stage>(() => ({ mats: new Map(), vis: new Map(), glide: [0, 0], scene, timing }), [])
   stage.scene = scene
-  stage.settle = settle
+  stage.timing = timing
+
+  const realLook = useApp((s) => s.realLook)
+  const real = useMemo(() => hasRealLook(model), [model]) && realLook
+  const byFill = model.spec.finishes
+  const look = useMemo<Look>(() => (real ? { real, byFill } : LINE_ART), [real, byFill])
+  const { resting, bare } = useMemo(() => bakedState(parts, scene, timing), [parts, scene, timing])
 
   useFrame(() => {
-    solve(stage, order, changed, elapsed())
+    solvePose(scene, timing, elapsed(), stage)
     for (const [id, g] of groups.current) {
       const m = stage.mats.get(id)
       if (!m) continue
       g.matrix.copy(m)
       g.matrixWorldNeedsUpdate = true
-      g.visible = stage.vis.get(id) !== false
+      g.visible = stage.vis.get(id) !== false && !resting.has(id)
     }
   }, -1)
 
@@ -479,10 +476,11 @@ export function ManualStage({ model, scene, callouts = true }: { model: ManualMo
 
   return (
     <StageContext.Provider value={stage}>
-      {parts.map((p) => (p.shape.type === 'cable'
-        ? <CableView key={p.id} part={p} tone={toneOf(p.id)} />
-        : <PartNode key={p.id} part={p} tone={toneOf(p.id)} register={register} />))}
-      {parts.filter((p) => p.shape.type === 'led').map((p) => <LedSpill key={`spill-${p.id}`} id={p.id} />)}
+      {real && <RealLighting />}
+      {drawn.map((p) => (p.shape.type === 'cable'
+        ? <CableView key={p.id} part={p} tone={toneOf(p.id)} look={look} />
+        : <PartNode key={p.id} part={p} tone={toneOf(p.id)} look={look} bare={bare.has(p.id)} register={register} />))}
+      {drawn.filter((p) => p.shape.type === 'led').map((p) => <LedSpill key={`spill-${p.id}`} id={p.id} />)}
       {callouts && <CalloutProjector callouts={scene.callouts} />}
     </StageContext.Provider>
   )
